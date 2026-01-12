@@ -95,10 +95,10 @@ Zero-shot AI & 0.0 \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.85\columnwidth]{figures/evaluation_radar.png}
-\caption{Radar chart comparing \foam{} (DebaterHub), human expert baselines (Debate Camps), and zero-shot AI models across six evaluation dimensions. \foam{} outperforms baselines on Overall Score, Argumentation, Evidence, and Coherence, with particularly strong gains in Evidence quality.}
-\Description{Six-axis radar chart with three overlapping polygons representing FOAM (DebaterHub), Debate Camps (human experts), and zero-shot AI models. The six axes are Overall Score, Argumentation, Evidence, Coherence, Innovation, and Viability. FOAM shows the largest polygon area, substantially outperforming on Evidence and Argumentation axes. Human experts form a medium-sized polygon, while zero-shot AI shows the smallest polygon with particularly weak Evidence scores.}
-\label{fig:evaluation-radar}
+\includegraphics[width=\columnwidth]{figures/combined_results.pdf}
+\caption{Tournament results comparing \foam{}, human expert baselines, and zero-shot AI. (a) Overall and Evidence Quality scores. (b) Perfect Validation rates---the percentage of citations that exactly match source text. \foam{} achieves 76.2\% perfect validation vs.\ 8.7\% for human experts and 0\% for zero-shot AI.}
+\Description{Two bar charts side by side. Left chart shows Overall Score and Evidence Quality for three sources: FOAM (81.7/86.7), Human Experts (70.1/56.9), and Zero-shot AI (50.6/27.1). Right chart shows Perfect Validation percentages: FOAM 76.2\%, Human Experts 8.7\%, Zero-shot AI 0\%.}
+\label{fig:evaluation-results}
 \end{figure}
 
 \textbf{Interpreting what is doing the work.} Two mechanisms plausibly drive the observed gap: (i) \textbf{pluralistic deliberation} (multi-perspective critique and refinement) improves strategic coherence and argument coverage, while (ii) \textbf{sentence-level provenance} directly improves evidence integrity and sharply limits fabrication opportunities. Consistent with this interpretation, the tournament champion (\texttt{Case\_045}, ``Navy Underwater Exploration'') achieved \textbf{fidelity = 1.0} alongside a strong final-round score, indicating that high persuasive quality and high verifiability can co-occur under the \foam{} constraint regime.
