@@ -1,0 +1,75 @@
+% Section 5: Evaluation - CC CUTS VERSION
+% Cuts: ~200 words
+
+\section{Empirical Evaluation}
+\label{sec:evaluation}
+
+\subsection{Research questions}
+\label{sec:research-questions}
+
+We evaluate \foam{}'s claims using an \emph{audit-style} design: explicit research questions, comparison against baselines, and both performance and traceability as first-class metrics~\cite{raji2020closing,lam2024assurance}. We ask whether \foam{} improves: \textbf{(RQ1)} quality/persuasiveness, \textbf{(RQ2)} evidence verifiability, and \textbf{(RQ3)} whether gains are attributable to accountability mechanisms rather than model strength.
+
+\subsection{Experimental design and baselines}
+\label{sec:experimental-design}
+
+\textbf{Task and artifact.} We evaluate in policy debate generation because it combines long-horizon planning, adversarial robustness expectations, and strict evidentiary norms~\cite{slonim2021autonomous}. We focus on the \textbf{first affirmative constructive (1AC)}---the most demanding generative unit, requiring a full strategic position with evidentiary support under tight constraints.
+
+\textbf{Corpus and baselines.} We ran a \textbf{double-blind tournament of 66 cases}: (i) \textbf{\foam{}-based system} ($n=22$), with differentiated perspectives, dialectical refinement, typed syllogisms, and sentence-level provenance; (ii) \textbf{human expert baseline} ($n=23$) from prestigious debate camps; and (iii) \textbf{zero-shot AI baseline} ($n=21$) from frontier models with prompt engineering but without pluralistic architecture.
+
+\textbf{Evidence corpus.} \foam{} leverages OpenDebateEvidence (\textbf{3.5M+} documents)~\cite{roush2024opendebate}. Our system queries $\sim$85,000 curated cards, preserving \emph{sentence-level identifiers} for downstream tracing.
+
+\subsection{Judging rubric and scoring}
+\label{sec:judging-rubric}
+
+All submissions were anonymized. Cases advanced through a modified Swiss-style bracket with double elimination. A Claude Opus 4 judge evaluated each case on five dimensions: Argumentation Strength (25\%), Evidence Quality (25\%), Strategic Coherence (20\%), Innovation (15\%), and Competitive Viability (15\%).
+
+\subsection{Evidence validation methodology}
+\label{sec:evidence-validation}
+
+In contestable systems, stakeholders must \emph{locate} and \emph{evaluate} claim grounds~\cite{raji2020closing}. Each citation was checked against the source and classified as \textbf{exact match}, \textbf{partial match}, \textbf{paraphrase}, or \textbf{fabricated}. We report \textbf{Perfect Validation}: exact matches where cited claims appear verbatim in source spans. \foam{}'s sentence-level provenance changes validation from semantic retrieval into \emph{pointer integrity}---the model selects sentence indices rather than reproducing text, reducing fabrication degrees of freedom.
+
+\subsection{Results}
+\label{sec:results}
+
+\textbf{Main outcomes.} Table~\ref{tab:main-results} reports aggregate performance. \foam{} achieved overall score \textbf{81.7} vs.\ human experts \textbf{70.1} and zero-shot AI \textbf{50.6}. The largest gap: \textbf{Evidence Quality} (\textbf{86.7} vs.\ \textbf{56.9} vs.\ \textbf{27.1}).
+
+\begin{table}[htbp]
+\caption{Tournament Results by Source}
+\label{tab:main-results}
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Metric} & \textbf{\foam{}} & \textbf{Human Expert} & \textbf{Zero-shot AI} \\
+\midrule
+Overall Score & 81.7 & 70.1 & 50.6 \\
+Evidence Quality & 86.7 & 56.9 & 27.1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Evidence validation.} Table~\ref{tab:validation} reports Perfect Validation rates. \foam{} achieved \textbf{76.2\%}, vs.\ \textbf{8.7\%} for human experts and \textbf{0\%} for zero-shot AI. This is the central accountability result: \foam{} produces arguments whose evidentiary support can be mechanically verified.
+
+\begin{table}[htbp]
+\caption{Perfect Validation Rates}
+\label{tab:validation}
+\centering
+\begin{tabular}{lc}
+\toprule
+\textbf{Source} & \textbf{Perfect Validation (\%)} \\
+\midrule
+\foam{} System & 76.2 \\
+Human Expert & 8.7 \\
+Zero-shot AI & 0.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{figures/combined_results.pdf}
+\caption{Tournament results. (a) Overall and Evidence Quality scores. (b) Perfect Validation rates. \foam{} achieves 76.2\% perfect validation vs.\ 8.7\% for human experts and 0\% for zero-shot AI.}
+\Description{Two bar charts showing scores and validation rates across three sources.}
+\label{fig:evaluation-results}
+\end{figure}
+
+\textbf{Interpretation.} Two mechanisms drive the gap: (i) \textbf{pluralistic deliberation} improves coherence and coverage, while (ii) \textbf{sentence-level provenance} improves evidence integrity. The tournament champion achieved \textbf{fidelity = 1.0} alongside strong scores, indicating high quality and verifiability can co-occur under \foam{}.

@@ -1,0 +1,87 @@
+% FOAM: A Pluralistic Architecture for Explainable and Contestable AI
+% FAccT 2026 Submission - REDUCED VERSION
+
+\documentclass[manuscript,screen,review,anonymous]{acmart}
+
+% For submission - remove these lines for camera-ready
+\setcopyright{none}
+\settopmatter{printfolios=true}
+
+% Fix font expansion issue
+\usepackage{lmodern}
+
+% Package imports
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{xspace}
+
+% Custom commands
+\newcommand{\foam}{\textsc{FOAM}}
+\newcommand{\ie}{i.e.,\xspace}
+\newcommand{\eg}{e.g.,\xspace}
+
+% Title and authors
+\title{Framework for Openly Augmented Mediation (FOAM): A Pluralistic Architecture for Explainable and Contestable AI}
+
+\author{Devin Gonier}
+\affiliation{
+  \institution{DebaterHub}
+  \country{USA}
+}
+\email{dgonier@debaterhub.com}
+
+\author{John Hines}
+\affiliation{
+  \institution{DebaterHub}
+  \country{USA}
+}
+\email{jhines@debaterhub.com}
+
+\author{P. Anand Rao}
+\affiliation{
+  \institution{University of Mary Washington}
+  \department{Center for AI and the Liberal Arts}
+  \country{USA}
+}
+\email{prao@umw.edu}
+
+% Keywords
+\keywords{Algorithmic accountability; Contestable AI; Explainable AI (XAI); Multi-agent deliberation; Evidence provenance}
+
+\begin{document}
+
+\begin{abstract}
+High-stakes AI systems increasingly mediate access to credit, healthcare, and public benefits, yet affected parties often cannot see why a decision was made or meaningfully contest it. Even post hoc review of chain-of-thought traces from individual models can be incomplete or strategically misleading, thereby limiting accountability. We propose \foam{}, a pluralistic architecture for multi-agent language systems that treats explanation as a deliberative process where differentiated agents advance value- and role-specific arguments, a protocol structures rebuttal and evidence challenges, and a synthesis operator outputs both a recommendation and the surviving points of contention with sentence-level provenance. We implement \foam{} within a policy-debate case-generation system and evaluate it in a blinded tournament of 66 cases using automated multi-criteria evaluation and independent evidence verification. \foam{} outperforms human-expert and zero-shot model baselines on overall quality (81.7 vs. 70.1 and 50.6) and yields substantially higher perfect-evidence validation (76.2\% vs. 8.7\% and 0\%), thereby enabling downstream auditing and dispute resolution. We discuss how deliberative architectures can operationalize the requirements of transparency and contestation in emerging governance regimes and outline safeguards for dual-use persuasive capabilities.
+\end{abstract}
+
+\maketitle
+
+% Include sections - MIX OF ORIGINAL AND CUT VERSIONS
+\input{sections/01_introduction}
+\input{sections/02_related_work_cc_cuts}
+\input{sections/03_foam_approach_cc_cuts}
+\input{sections/04_case_study}
+\input{sections/05_evaluation}
+\input{sections/06_implications}
+\input{sections/07_limitations}
+\input{sections/08_conclusion}
+
+% === REQUIRED STATEMENTS FOR SUBMISSION ===
+% Note: Author Contributions, Acknowledgements, Competing Interests,
+% and Positionality Statement should be EXCLUDED for anonymous submission
+
+\section*{Generative AI Usage Statement}
+This research investigates the use of large language models (LLMs) within a structured multi-agent deliberation framework. The \foam{} system described in this paper uses LLMs as components within the deliberation pipeline. The paper text itself was drafted by human authors with AI assistance limited to copy-editing and formatting suggestions. All substantive claims, experimental design, and analysis reflect human judgment and interpretation.
+
+\section*{Ethical Considerations}
+This work develops AI systems with persuasive capabilities, which raises dual-use concerns. We address these in Section~\ref{sec:limitations} and Section~\ref{sec:implications}, discussing safeguards including transparency requirements, evidence provenance constraints, and the deliberate choice to evaluate in a domain (competitive debate) with established norms for scrutinizing persuasive claims. The evaluation involved no human subjects; all baselines were drawn from publicly available debate materials or generated outputs.
+
+% Bibliography
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}

@@ -63,14 +63,7 @@ Cross-examination produces a \textbf{mediation graph}: a structured trace that l
 
 After critique and revision, \foam{} applies a \textbf{sublation operator}: a synthesis step intended to preserve what is valuable in competing positions while explicitly retaining unresolved tensions. In \foam{}, sublation is not a rhetorical flourish; it is a concrete rule: synthesis is disallowed from silently discarding objections that were scored as material or from collapsing incompatible value frames into an unmarked compromise.
 
-Operationally, \foam{}'s sublation emits a structured output with (at minimum) three parts:
-\begin{enumerate}
-    \item A \textbf{consensus core} (claims that survived critique across stances),
-    \item A set of \textbf{conditional or branch claims} (``if autonomy is prioritized over aggregate welfare, then\ldots''), and
-    \item A \textbf{minority report / dissent memo} that records unresolved conflicts, the strongest arguments on each side, and which premises are contested.
-\end{enumerate}
-
-Sublation preserves dissent explicitly.
+Sublation emits three artifacts: \textbf{a consensus core} (claims surviving cross-stance critique), \textbf{conditional claims} (branching on unresolved value priorities), and a \textbf{dissent memo} (recording conflicts and contested premises).
 
 \subsection{Inspectable argument structure: Toulmin decomposition and typed syllogisms}
 \label{sec:argument-structure}
@@ -78,3 +71,5 @@ Sublation preserves dissent explicitly.
 To make contestation actionable, \foam{} constrains agent outputs into an \textbf{inspectable argument structure} rather than free-form prose. We adopt Toulmin-style decomposition---claim, grounds, warrant, backing, qualifier, rebuttal---because it maps naturally to ``what can be challenged'': stakeholders can contest evidence (grounds), the inferential link (warrant), scope conditions (qualifier), or missing counterevidence (rebuttal)~\cite{toulmin1958uses}. This structure also aligns with prior work connecting computational argumentation to explainable AI, where explanations are made more useful by exposing structured reasons and counterreasons rather than only surface-level narratives~\cite{vassiliades2021argumentation}.
 
 \foam{} additionally employs \textbf{typed syllogisms}---domain-relevant argument templates that enforce completeness (\eg in policy debate: Advantage = Uniqueness + Link + Impact; Disadvantage = Uniqueness + Link + Impact; Kritik = Link + Impact + Alternative). These structures are standard in competitive policy debate pedagogy and make dependencies explicit for non-expert audiences~\cite{snider2008code}. In \foam{}, typed syllogisms function as contestability scaffolds: if a stakeholder disputes the conclusion, the system can point to the \emph{specific missing or weak component} (\eg ``impact evidence absent'' or ``link warrant unsupported''), and the mediation graph can show whether that component was ever raised in critique and why it survived. The result is a system where ``challenge'' is not a vague request to ``explain more,'' but a targeted operation on a specific argumentative component with traceable upstream dependencies.
+
+Template tree traversal operationalizes structural contestability. At each branch point, the system records which template was selected (\eg ``traditional 1AC with 3 advantages'' vs.\ ``kritik with alternative''), what resource allocation was applied, and whether any novel templates were generated. This trace enables a distinct class of challenges: stakeholders can dispute not only \emph{what} claims were made, \emph{but why the argumentative structure took this form rather than another.} For instance, a reviewer might contest that a utilitarian impact calculus was chosen when the underlying values favor a rights-based framing---and the template selection trace makes this challenge actionable. Furthermore, unlike traditional chain-of-thought reasoning where reasoning and response are interwoven and in some cases reasoning is not always a reliable indicator for why outputs occurred, the template tree traversal process is a discrete step occurring prior and serving as a foundational infrastructure to drafting.

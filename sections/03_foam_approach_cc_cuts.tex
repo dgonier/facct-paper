@@ -1,0 +1,50 @@
+% Section 3: FOAM Approach - CC CUTS VERSION
+% Cuts: ~250 words
+
+\section{FOAM approach: pluralistic architecture for explainability and contestability}
+\label{sec:foam-approach}
+
+\subsection{Design goals and accountability threat model}
+\label{sec:design-goals}
+
+Building on Section~\ref{sec:related-work}, we treat \emph{explainability} and \emph{contestability} as properties of an \textbf{epistemic process}, not a post-hoc narrative. We introduce \textbf{\foam{} (Framework for Openly Augmented Mediation)}: a pluralistic, multi-agent architecture producing an answer \emph{plus} a structured record of how it was stress-tested and synthesized. \foam{} is organized around three primitives: (i) \emph{differentiated agents} parameterized by explicit stance data structures, (ii) \emph{deliberative protocols} forcing critique and revision, and (iii) \emph{sublation} operators that synthesize without erasing disagreement. Figure~\ref{fig:system-overview} provides a system overview.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{figures/FOAM_system_overview.png}
+\caption{\foam{} system architecture. Differentiated agents with explicit perspective nodes engage in deliberative protocols producing accountability artifacts including a consensus core, conditional claims, and dissent memo.}
+\Description{Architecture diagram showing the FOAM system with six main processing stages connected by arrows, with Perspective Nodes feeding into agents, a Mediation Graph capturing deliberation, and three output types.}
+\label{fig:system-overview}
+\end{figure}
+
+Our threat model assumes base generative models can (a) produce fluent but false claims (``hallucination''), (b) rationalize decisions after the fact, (c) collapse multiple perspectives into a dominant frame, and (d) bury value tradeoffs inside unstructured prose. \foam{}'s core design makes \emph{points of potential failure} explicitly addressable: disagreements are surfaced, objections are first-class objects, and synthesis preserves traceability from contested premises to recommendations.
+
+\subsection{Differentiated agents via explicit perspective representation}
+\label{sec:differentiated-agents}
+
+\foam{} instantiates agents each assigned an explicit \emph{Perspective Node} encoding \emph{who the agent is epistemically}---domain role, value priorities, and reasoning schema. This implements ``situated'' explanation in an auditable way: the system discloses positions and enables critique of \emph{perspective selection} itself~\cite{haraway1988situated}. Perspective nodes are operational constraints shaping what evidence is legitimate, which impacts are foregrounded, and which argument schemes are preferred.
+
+A perspective node has three components: (1) \textbf{role} (\eg regulator, clinician, community advocate), (2) \textbf{normative weighting} (\eg safety vs autonomy vs equity), and (3) \textbf{epistemic policy} (\eg acceptable support standards). During deliberation, \foam{} enforces \emph{stance coherence}: if generated warrants contradict the declared stance, the system flags the inconsistency.
+
+Perspective nodes enable \textbf{second-order contestation}: stakeholders can dispute not only conclusions, but the \emph{legitimacy of the perspective configuration} (\eg ``Why is utilitarian cost-effectiveness in scope here?''). \foam{} makes the stance set an explicit input and target for governance~\cite{kasirzadeh2024plurality}. This means \foam{} can be rerun with added perspectives, reweighted priorities, or altered evidentiary rules, producing \emph{comparative, contestable} outcomes.
+
+\subsection{Deliberative protocol: dialectical refinement and mediation trace}
+\label{sec:deliberative-protocol}
+
+\foam{}'s deliberation is a \textbf{mediation loop}: (1) \emph{seeding} (instantiate agents + perspectives), (2) \emph{local drafting} (independent proposals), (3) \emph{cross-examination} (structured objections), (4) \emph{evaluation} (scoring draft--objection pairs), and (5) \emph{revision + synthesis}. The accountability point: \textbf{deliberation guarantees structured opportunities to find and localize error}, and records what happened when error was raised.
+
+Cross-examination produces a \textbf{mediation graph}: a trace linking \emph{which agent} made \emph{which claim}, what objections were raised, how claims were revised, and which survived. This is the audit primitive: stakeholders can point to \emph{the specific node} where they disagree. The trace can be expressed using standard provenance representations (\eg PROV-O)~\cite{lebo2013prov}.
+
+\subsection{Sublation: synthesis without erasure}
+\label{sec:sublation}
+
+After critique, \foam{} applies a \textbf{sublation operator}: synthesis preserving what is valuable in competing positions while retaining unresolved tensions. Synthesis is disallowed from silently discarding material objections or collapsing incompatible frames into unmarked compromise. Sublation emits three artifacts: \textbf{a consensus core} (claims surviving cross-stance critique), \textbf{conditional claims} (branching on unresolved priorities), and a \textbf{dissent memo} (recording conflicts and contested premises).
+
+\subsection{Inspectable argument structure: Toulmin decomposition and typed syllogisms}
+\label{sec:argument-structure}
+
+To make contestation actionable, \foam{} constrains outputs into \textbf{inspectable argument structure}. We adopt Toulmin-style decomposition---claim, grounds, warrant, backing, qualifier, rebuttal---because it maps to ``what can be challenged'': stakeholders can contest evidence, the inferential link, scope conditions, or missing counterevidence~\cite{toulmin1958uses,vassiliades2021argumentation}.
+
+\foam{} employs \textbf{typed syllogisms}---argument templates enforcing completeness (\eg Advantage = Uniqueness + Link + Impact). These function as contestability scaffolds: if a stakeholder disputes the conclusion, the system points to the \emph{specific weak component}, and the mediation graph shows whether it was raised in critique~\cite{snider2008code}.
+
+Template tree traversal operationalizes structural contestability. At each branch point, the system records which template was selected (\eg ``traditional 1AC'' vs.\ ``kritik''), what resource allocation was applied, and whether novel templates were generated. Stakeholders can dispute not only \emph{what} claims were made, but \emph{why the structure took this form}. Unlike chain-of-thought where reasoning and response are interwoven, template traversal is a discrete prior step serving as foundational infrastructure to drafting.

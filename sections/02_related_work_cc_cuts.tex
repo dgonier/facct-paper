@@ -1,0 +1,33 @@
+% Section 2: Related Work - CC CUTS VERSION
+% Cuts: ~200 words
+
+\section{Accountability requirements and related work}
+\label{sec:related-work}
+
+\subsection{Explainability requirements beyond transparency}
+\label{sec:explainability-requirements}
+
+Contemporary calls for ``explainable AI'' often conflate \textbf{transparency} (exposing internal mechanisms) with \textbf{explanation} (providing reasons meaningful for a particular audience). Lipton argues that interpretability is not a single property and that many ``explanations'' function as \emph{post-hoc rationalizations} whose relationship to actual model behavior is ambiguous~\cite{lipton2018mythos}. Doshi-Velez \& Kim emphasize that interpretability claims must be made relative to \textbf{use context}---including the user's expertise and stakes---because what counts as satisfactory differs across settings~\cite{doshivelez2017towards}. In high-stakes domains, this motivates either inherently interpretable models or explanation mechanisms that achieve \emph{reliability and auditability} rather than superficial plausibility~\cite{rudin2019stop}.
+
+For accountability, explanations must be \textbf{diagnostically useful} and \textbf{robust to strategic manipulation}. The NLP interpretability literature distinguishes \emph{plausibility} (does an explanation look reasonable?) from \emph{faithfulness} (does it track the true basis of the output?), arguing that faithful explanations require designs that go beyond ``nice-sounding'' rationales~\cite{jacovi2020towards}. Explainability requirements should thus be stated in terms of \textbf{checkability}: tracing claims to concrete support and isolating points of disagreement~\cite{miller2019explanation,jacovi2020towards}.
+
+\subsection{Contestability as a system property}
+\label{sec:contestability}
+
+Explainability alone does not guarantee meaningful challenge; contestability is best treated as a \textbf{system-level governance property}. Alfrink et al.\ frame ``contestable AI by design'' as building systems to \emph{support} contestation---through traceability, structured justification, and pathways for challenge---rather than treating contestation as an external process~\cite{alfrink2023contestable}. Legal scholarship similarly emphasizes that decision-subjects need procedures to \emph{question, rebut, and obtain redress}~\cite{kroll2017accountable}. This matters because the scope of a ``right to explanation'' under GDPR is contested~\cite{wachter2017right}.
+
+Operationally, contestability implies three requirements: (1) \textbf{visibility} that an AI-assisted decision occurred; (2) \textbf{comprehensibility} of stated grounds; and (3) \textbf{actionability}---a pathway to present counterevidence and obtain revision~\cite{alfrink2023contestable,kroll2017accountable}. The EU's Trustworthy AI guidance treats accountability as including mechanisms for redress and capacity to challenge outcomes~\cite{eu2019trustworthy}. These sources motivate a design target: \textbf{contestability must be an end-to-end workflow} linking reasons to evidence, rather than a static artifact~\cite{raji2020closing}.
+
+\subsection{Pluralistic and deliberative approaches to accountability}
+\label{sec:pluralistic-approaches}
+
+In high-stakes settings, disagreement is often normative (``which values should dominate?'') not merely empirical. Feminist epistemology argues that knowledge claims are situated and that ``view from nowhere'' objectivity can mask whose assumptions are operationalized~\cite{haraway1988situated}. For AI accountability, this motivates an architectural stance: systems should make \textbf{value trade-offs explicit} and preserve dissenting considerations in contestable form~\cite{miller2019explanation}.
+
+Recent work emphasizes that ``alignment'' is underdetermined when stakeholders disagree about objectives and risks. Kasirzadeh distinguishes alignment approaches that presume a single value target from those treating plural values as first-class constraints~\cite{kasirzadeh2023conversation}. ``Society-in-the-loop'' framings argue that algorithmic systems require institutionalized interfaces for dispute and revision~\cite{rahwan2018society}. These perspectives justify \textbf{pluralistic explanation} as a governance mechanism helping stakeholders identify where reasoning depends on contestable assumptions.
+
+\subsection{Multi-agent deliberation and debate in AI}
+\label{sec:multi-agent-deliberation}
+
+A technical pathway to operationalizing pluralism is \textbf{structured multi-agent deliberation}. In AI safety, ``debate'' was proposed as a scalable oversight mechanism where adversarial argumentation surfaces flaws a single system might hide~\cite{irving2018ai}. Multi-agent debate among LLMs has been reported to improve factuality~\cite{du2023improving}. However, most results are evaluated in terms of accuracy; they do not guarantee that justifications are \textbf{auditable} or that third parties can contest specific premises~\cite{rudin2019stop,jacovi2020towards}.
+
+Computational argumentation provides complementary foundations via explicit representations of \textbf{claims, warrants, attacks, and normative priorities}. Toulmin's model analyzes argument structure in terms of claims supported by warrants and backing~\cite{toulmin1958uses}. Surveys connecting argumentation and XAI argue these representations support explanation as a structured object of inquiry---stakeholders can contest particular premises and observe how conclusions change~\cite{vassiliades2021argumentation}. This motivates the claim that a \emph{contestable} AI system should produce a \textbf{dispute-ready argumentative record}: reasons decomposed into contestable units, linked to supporting materials, and amenable to revision~\cite{kroll2017accountable,vassiliades2021argumentation}.

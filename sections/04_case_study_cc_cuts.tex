@@ -1,0 +1,44 @@
+% Section 4: Case Study - CC CUTS VERSION
+% Cuts: ~150 words
+
+\section{Case study: evidence-grounded policy debate generation}
+\label{sec:case-study}
+
+\subsection{Why policy debate is an accountability crucible}
+\label{sec:debate-crucible}
+
+We instantiate \foam{} in a domain where \emph{contestability is native}: American competitive policy debate. Teams argue for and against policy proposals under strict procedural constraints, with argument quality evaluated through \emph{traceable evidentiary support} and explicit clash. Policy debate operationalizes ``grounding'' through the \emph{debate card}: a short summary, full citation, and verbatim quoted source text with token-level highlighting. Competitive success is strongly coupled to evidence quality, creating an environment where provenance and verifiability are not optional.
+
+\subsection{Pipeline overview}
+\label{sec:pipeline-overview}
+
+Figure~\ref{fig:pipeline} summarizes our \textbf{five-phase pipeline} for generating an evidence-grounded constructive speech. Phases 1--3 produce an inspectable argumentative plan (perspective assignment $\rightarrow$ strategic plan $\rightarrow$ template traversal), Phase 4 binds components to \emph{verbatim evidence at sentence granularity}, and Phase 5 compiles and verifies. The key principle: keep the model auditable by decomposing ``case construction'' into constrained decisions leaving a machine-checkable trail.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{figures/contestability_mechanics.png}
+\caption{Five-phase pipeline with contestability mechanisms. Phases 1--3 handle argumentative planning. Phase 4 creates sentence-level provenance. Phase 5 enforces verification checks.}
+\Description{Flow diagram showing five sequential phases flowing to a Contestable Speech Artifact.}
+\label{fig:pipeline}
+\end{figure}
+
+\subsection{Phases 1--3: perspective assignment, planning, and template traversal}
+\label{sec:phases-1-3}
+
+Phases 1--3 produce an inspectable plan through three contestability-relevant operations. In \textbf{Phase 1}, the system assigns an explicit perspective node, making the evaluative frame auditable. In \textbf{Phase 2}, a dialectical refinement loop stress-tests the plan: a Critic issues typed objections (logical gap, missing evidence, value conflict, scope overreach), an Evaluator scores materiality, and the Proposer revises. This iterates at least three times, with \emph{all objections remaining in the mediation graph}.
+
+In \textbf{Phase 3}, template traversal expands the plan into a typed syllogism scaffold. The system records which template was selected, word allocation applied, and whether novel templates were generated---enabling challenges to \emph{why the structure took this form}.
+
+\subsection{Phase 4: sentence-level provenance}
+\label{sec:phase-4}
+
+\textbf{Motivation.} RAG can reduce hallucinations but does not eliminate accountability failures: models may produce claims \emph{unsupported by} or \emph{misattributed to} retrieved text. Phase 4 implements a stronger constraint: operating over \emph{sentence identifiers} rather than free-form rewriting.
+
+\textbf{Mechanism.} Step (a): The system queries a debate-evidence store, segments documents into sentences with stable indices of form \texttt{(document\_id, sentence\_id)}. Step (b): The LLM selects which sentence IDs support each argument slot and generates only a short ``tag'' stating what the evidence establishes. The model never restates evidence; content is assembled from retrieved sentences. This eliminates fabricated quotations by construction: the model can be wrong about \emph{which} sentences to use, but cannot invent sentences not in the retrieved set.
+
+\textbf{Contestability properties.} Sentence-level provenance shifts contestation from ``argue about what the model meant'' to ``inspect exactly what it relied on.'' Stakeholders can challenge (i) \emph{relevance}, (ii) \emph{adequacy}, or (iii) \emph{selection bias}---each targeting a concrete sentence ID.
+
+\subsection{Phase 5: compilation and verification}
+\label{sec:phase-5}
+
+Phase 5 compiles the scaffold and evidence bindings, preserving the provenance map. Verification checks enforce: (1) \textbf{structural completeness} (required components present), (2) \textbf{evidence/claim alignment} (each slot has bound sentences; missing bindings fail closed), and (3) \textbf{perspective consistency} (warrants don't contradict the declared perspective).
