@@ -93,4 +93,11 @@ Zero-shot AI & 0.0 \\
 \end{tabular}
 \end{table}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\columnwidth]{figures/evaluation_radar.png}
+\caption{Radar chart comparing \foam{} (DebaterHub), human expert baselines (Debate Camps), and zero-shot AI models across six evaluation dimensions. \foam{} outperforms baselines on Overall Score, Argumentation, Evidence, and Coherence, with particularly strong gains in Evidence quality.}
+\label{fig:evaluation-radar}
+\end{figure}
+
 \textbf{Interpreting what is doing the work.} Two mechanisms plausibly drive the observed gap: (i) \textbf{pluralistic deliberation} (multi-perspective critique and refinement) improves strategic coherence and argument coverage, while (ii) \textbf{sentence-level provenance} directly improves evidence integrity and sharply limits fabrication opportunities. Consistent with this interpretation, the tournament champion (\texttt{Case\_045}, ``Navy Underwater Exploration'') achieved \textbf{fidelity = 1.0} alongside a strong final-round score, indicating that high persuasive quality and high verifiability can co-occur under the \foam{} constraint regime.
