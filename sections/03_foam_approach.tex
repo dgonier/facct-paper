@@ -1,0 +1,72 @@
+% Section 3: FOAM Approach
+% Last updated from: v1_2025-01-12_baseline.md
+
+\section{FOAM approach: pluralistic architecture for explainability and contestability}
+\label{sec:foam-approach}
+
+\subsection{Design goals and accountability threat model}
+\label{sec:design-goals}
+
+Building on the accountability requirements in Section~\ref{sec:related-work}, we treat \emph{explainability} and \emph{contestability} as properties of an \textbf{epistemic process}, not a post-hoc narrative from a monolithic model. Concretely, we introduce \textbf{\foam{} (Framework for Openly Augmented Mediation)}: a pluralistic, multi-agent architecture that produces an answer \emph{plus} a structured record of how that answer was stress-tested, revised, and synthesized. \foam{} is organized around three primitives:
+\begin{enumerate}
+    \item \emph{Differentiated agents} parameterized by explicit and persistent stance data structures at test time,
+    \item \emph{Deliberative protocols} that force critique and revision, and
+    \item \emph{Sublation} operators that synthesize without erasing disagreement.
+\end{enumerate}
+
+Figure~\ref{fig:system-overview} provides a system overview: stance seeding $\rightarrow$ local drafting $\rightarrow$ cross-examination $\rightarrow$ evaluation $\rightarrow$ revision/sublation $\rightarrow$ accountability artifacts.
+
+Our threat model is accountability-centric: we assume that base generative models can (a) produce fluent but false claims and fabricated or misattributed support (``hallucination''), (b) rationalize decisions after the fact, (c) collapse multiple stakeholder perspectives into a single dominant frame, and (d) bury value tradeoffs inside unstructured prose such that stakeholders cannot identify \emph{what}, precisely, to challenge. These failure modes do not require adversarial intent; they are well documented in contemporary NLP systems and can persist even under strong prompting~\cite{ji2023survey}. \foam{}'s core design choice is therefore to make \emph{points of potential failure} explicitly addressable: disagreements are surfaced rather than smoothed, objections are represented as first-class objects, and synthesis is constrained to preserve traceability from contested premises to final recommendations.
+
+\subsection{Differentiated agents via explicit perspective and stance representation}
+\label{sec:differentiated-agents}
+
+\foam{} begins by instantiating a small set of agents ($n$ chosen by stakes and time budget), each assigned an explicit data structure represented as a \emph{Perspective Node} and stored in a vector database that encodes \emph{who the agent is meant to be epistemically}---its domain role, value priorities, and reasoning schema. This implements ``situated'' explanation in a directly auditable way: instead of implicitly claiming neutrality, the system discloses positions and thereby enables critique of the \emph{perspective selection} itself~\cite{haraway1988situated}. In \foam{}, perspective nodes are not just labels; they are operational constraints that shape what evidence is considered legitimate, which impacts are foregrounded, and which argument schemes are preferred.
+
+Practically, we treat a perspective node as a structured record with three minimum components:
+\begin{enumerate}
+    \item \textbf{Role} (\eg regulator, clinician, affected community advocate),
+    \item \textbf{Normative weighting} (\eg safety vs autonomy vs distributive equity), and
+    \item \textbf{Epistemic policy} (\eg what counts as acceptable support; how uncertainty must be qualified).
+\end{enumerate}
+
+During deliberation, \foam{} enforces \emph{stance coherence}: if an agent's generated warrants or qualifiers contradict its declared stance, the system requests revision or flags the inconsistency for downstream inspection. This is the anti-``performative pluralism'' mechanism: pluralism is only accountability-relevant if the system can show (and users can contest) whether distinct perspectives were actually maintained rather than rhetorically simulated.
+
+Perspective nodes also make \textbf{second-order contestation} practical: stakeholders can dispute not only the system's conclusion, but the \emph{legitimacy of the value and perspective configuration} that produced it (\eg ``Why is utilitarian cost-effectiveness even in scope here?''). This matters because pluralistic systems can otherwise ``value-wash'' by claiming inclusivity while quietly privileging one evaluative frame. \foam{} makes the stance set an explicit input and therefore a target for governance and oversight; this aligns with work arguing that legitimacy depends on making value choices and their selection procedures contestable~\cite{kasirzadeh2024plurality}. In deployment terms, this means \foam{} can be rerun with (i) added perspectives, (ii) reweighted value priorities, or (iii) altered evidentiary rules, producing \emph{comparative, contestable} outcomes rather than a single authoritative verdict.
+
+\subsection{Deliberative protocol: dialectical refinement and mediation trace}
+\label{sec:deliberative-protocol}
+
+\foam{}'s deliberation is implemented as a \textbf{mediation loop}:
+\begin{enumerate}
+    \item \emph{Seeding} (instantiate agents + perspective nodes),
+    \item \emph{Local drafting} (agents generate independent proposals),
+    \item \emph{Cross-examination} (agents issue structured objections and targeted questions),
+    \item \emph{Evaluation} (a judge/jury component scores draft--objection pairs against criteria), and
+    \item \emph{Revision + synthesis} (agents revise and a sublation operator composes the provisional output).
+\end{enumerate}
+
+The accountability point is not that deliberation guarantees truth; it is that \textbf{deliberation guarantees structured opportunities to find and localize error}, and then to record what happened when error was raised.
+
+Cross-examination produces a \textbf{mediation graph}: a structured trace that links \emph{which agent} made \emph{which claim}, what objections were raised (\eg missing evidence, value conflict, logical gap), how the claim was revised, and which surviving claims contributed to the synthesis. This is the audit primitive: contestation requires that stakeholders can point to \emph{the specific node} where they disagree and see what depended on it. As an interoperability target, the mediation trace can be expressed using standard provenance representations (\eg PROV-O) so that downstream tools can query ``what influenced what'' across a run~\cite{lebo2013prov}.
+
+\subsection{Sublation: synthesis without erasure}
+\label{sec:sublation}
+
+After critique and revision, \foam{} applies a \textbf{sublation operator}: a synthesis step intended to preserve what is valuable in competing positions while explicitly retaining unresolved tensions. In \foam{}, sublation is not a rhetorical flourish; it is a concrete rule: synthesis is disallowed from silently discarding objections that were scored as material or from collapsing incompatible value frames into an unmarked compromise.
+
+Operationally, \foam{}'s sublation emits a structured output with (at minimum) three parts:
+\begin{enumerate}
+    \item A \textbf{consensus core} (claims that survived critique across stances),
+    \item A set of \textbf{conditional or branch claims} (``if autonomy is prioritized over aggregate welfare, then\ldots''), and
+    \item A \textbf{minority report / dissent memo} that records unresolved conflicts, the strongest arguments on each side, and which premises are contested.
+\end{enumerate}
+
+Sublation preserves dissent explicitly.
+
+\subsection{Inspectable argument structure: Toulmin decomposition and typed syllogisms}
+\label{sec:argument-structure}
+
+To make contestation actionable, \foam{} constrains agent outputs into an \textbf{inspectable argument structure} rather than free-form prose. We adopt Toulmin-style decomposition---claim, grounds, warrant, backing, qualifier, rebuttal---because it maps naturally to ``what can be challenged'': stakeholders can contest evidence (grounds), the inferential link (warrant), scope conditions (qualifier), or missing counterevidence (rebuttal)~\cite{toulmin1958uses}. This structure also aligns with prior work connecting computational argumentation to explainable AI, where explanations are made more useful by exposing structured reasons and counterreasons rather than only surface-level narratives~\cite{vassiliades2021argumentation}.
+
+\foam{} additionally employs \textbf{typed syllogisms}---domain-relevant argument templates that enforce completeness (\eg in policy debate: Advantage = Uniqueness + Link + Impact; Disadvantage = Uniqueness + Link + Impact; Kritik = Link + Impact + Alternative). These structures are standard in competitive policy debate pedagogy and make dependencies explicit for non-expert audiences~\cite{snider2008code}. In \foam{}, typed syllogisms function as contestability scaffolds: if a stakeholder disputes the conclusion, the system can point to the \emph{specific missing or weak component} (\eg ``impact evidence absent'' or ``link warrant unsupported''), and the mediation graph can show whether that component was ever raised in critique and why it survived. The result is a system where ``challenge'' is not a vague request to ``explain more,'' but a targeted operation on a specific argumentative component with traceable upstream dependencies.

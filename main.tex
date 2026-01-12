@@ -1,0 +1,63 @@
+% FOAM: A Pluralistic Architecture for Explainable and Contestable AI
+% FAccT 2025 Submission
+
+\documentclass[sigconf,nonacm]{acmart}
+
+% Package imports
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+% Track changes support - uncomment for revision mode
+% \usepackage[markup=underlined]{changes}
+% \definechangesauthor[name={Reviewer}, color=blue]{R1}
+
+% Custom commands
+\newcommand{\foam}{\textsc{FOAM}}
+\newcommand{\ie}{i.e.,\xspace}
+\newcommand{\eg}{e.g.,\xspace}
+
+% Title and authors
+\title{Framework for Openly Augmented Mediation (FOAM): A Pluralistic Architecture for Explainable and Contestable AI}
+
+\author{Author Names}
+\affiliation{
+  \institution{Institution}
+  \city{City}
+  \country{Country}
+}
+\email{email@institution.edu}
+
+% Keywords
+\keywords{Algorithmic accountability; Contestable AI; Explainable AI (XAI); Multi-agent deliberation; Evidence provenance}
+
+\begin{document}
+
+\begin{abstract}
+High-stakes AI systems increasingly mediate access to credit, healthcare, and public benefits, yet affected parties often cannot see why a decision was made or meaningfully contest it. Even post hoc review of chain-of-thought traces from individual models can be incomplete or strategically misleading, thereby limiting accountability. We propose \foam{}, a pluralistic architecture for multi-agent language systems that treats explanation as a deliberative process where differentiated agents advance value- and role-specific arguments, a protocol structures rebuttal and evidence challenges, and a synthesis operator outputs both a recommendation and the surviving points of contention with sentence-level provenance. We implement \foam{} within a policy-debate case-generation system and evaluate it in a blinded tournament of 66 cases using automated multi-criteria evaluation and independent evidence verification. \foam{} outperforms human-expert and zero-shot model baselines on overall quality (81.7 vs. 70.1 and 50.6) and yields substantially higher perfect-evidence validation (76.2\% vs. 8.7\% and 0\%), thereby enabling downstream auditing and dispute resolution. We discuss how deliberative architectures can operationalize the requirements of transparency and contestation in emerging governance regimes and outline safeguards for dual-use persuasive capabilities.
+\end{abstract}
+
+\maketitle
+
+% Include sections
+\input{sections/01_introduction}
+\input{sections/02_related_work}
+\input{sections/03_foam_approach}
+\input{sections/04_case_study}
+\input{sections/05_evaluation}
+\input{sections/06_implications}
+\input{sections/07_limitations}
+\input{sections/08_conclusion}
+
+% Bibliography
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+% Appendices (if needed)
+% \appendix
+% \input{appendix/appendix_a}
+
+\end{document}

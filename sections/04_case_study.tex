@@ -1,0 +1,45 @@
+% Section 4: Case Study
+% Last updated from: v1_2025-01-12_baseline.md
+
+\section{Case study system: evidence-grounded policy debate generation}
+\label{sec:case-study}
+
+\subsection{Why policy debate is an accountability crucible}
+\label{sec:debate-crucible}
+
+We instantiate \foam{} in a domain where \emph{contestability is native to the task}: American competitive policy debate. Policy debate is a two-team adversarial format in which teams argue for and against a policy proposal under strict procedural constraints. In this ecosystem, argument quality is not evaluated purely as rhetorical fluency; instead, the activity is structured around \emph{traceable evidentiary support} and explicit clash, so claims can be challenged in real time and revisited across subsequent speeches. Critically, policy debate operationalizes ``grounding'' through an established evidence artifact: the \emph{debate card}. A card typically includes (i) a short biased summary intended to support a specific argumentative function, (ii) a full citation, and (iii) verbatim quoted source text, often with token-level highlighting that marks precisely what will be read into the round. Competitive success is strongly coupled to evidence quality and its deployment, creating an evaluation environment where provenance and verifiability are not optional.
+
+\subsection{Pipeline overview}
+\label{sec:pipeline-overview}
+
+Figure~\ref{fig:pipeline} summarizes our \textbf{five-phase pipeline} for generating an evidence-grounded constructive speech (the 1AC, in our evaluation setting). Phases 1--3 produce an inspectable argumentative plan in typed components (perspective assignment $\rightarrow$ strategic plan $\rightarrow$ template traversal), Phase 4 binds each argumentative component to \emph{verbatim evidence at sentence granularity} (sentence-level provenance), and Phase 5 compiles and verifies the result (structural conformance, evidence/claim alignment, and perspective consistency). The key design principle is to keep the model in a role where it can be audited: rather than ``write a persuasive case and cite sources,'' the system decomposes ``case construction'' into a sequence of constrained decisions that leave a machine-checkable trail.
+
+\subsection{Phases 1--3: perspective assignment, planning, and template traversal}
+\label{sec:phases-1-3}
+
+Phases 1--3 produce an inspectable argumentative plan: the system selects an explicit perspective, drafts a typed strategic blueprint, and expands it into a structured scaffold with evidence slots. These phases are implementation detail for our case-study pipeline; we summarize the key outputs here and provide full prompt/protocol detail in Appendix~\ref{app:prompts}. The primary accountability mechanisms evaluated in this paper are sentence-level provenance (Phase 4) and verification checks (Phase 5).
+
+\subsection{Phase 4: sentence-level provenance}
+\label{sec:phase-4}
+
+\textbf{Motivation.} Retrieval-augmented generation can reduce hallucinations, but it does not eliminate a central accountability failure mode: models may still produce claims that are \emph{unsupported by}, \emph{in conflict with}, or \emph{misattributed to} retrieved text. Recent benchmarks explicitly document that, even under RAG setups, LLM outputs can contain unsupported or contradictory content relative to the retrieved passages. Phase 4 therefore implements a stronger constraint than ``retrieve then paraphrase'': it forces the model to operate over \emph{sentence identifiers} rather than free-form rewriting of source material.
+
+\textbf{Mechanism.} Phase 4 is a two-step procedure:
+
+\textbf{Step (a): sentence indexing and retrieval.} The system queries (i) a debate-evidence store (implemented in our current system as a vector database over a large set of debate ``cards'') and (ii) any other preprocessed sources permitted by the pipeline. Retrieved documents are segmented into sentences, each assigned a stable index, and returned to the deliberation workspace as a set of candidates with identifiers of the form \texttt{(document\_id, sentence\_id)} plus immutable citation metadata.
+
+\textbf{Step (b): evidence selection and tagging.} The LLM is then prompted to (1) select which sentence IDs support each argument slot created in Phase 3 and (2) generate only a short ``tag'' that states what the selected evidence is being used to establish. Importantly, the model is not asked to restate the evidence; the evidence content in the final speech is assembled from the retrieved sentences themselves. This design eliminates an entire class of failure (fabricated quotations and invented citations) by construction: the model can be wrong about \emph{which} sentences to use, but it cannot invent sentences that are not in the retrieved set.
+
+\textbf{Accountability and contestability properties.} Sentence-level provenance changes the contestation workflow from ``argue about what the model meant'' to ``inspect exactly what the model relied on.'' A stakeholder can challenge (i) \emph{relevance} (``this sentence does not establish the warrant you claim''), (ii) \emph{adequacy} (``the evidence is too weak/out of context''), or (iii) \emph{selection bias} (``you ignored stronger counterevidence available in the same corpus'')---and each challenge targets a concrete object (a sentence ID and its parent source). This is especially aligned with policy debate's evidence norms, which already treat quoted and highlighted text as the unit of disputation under cross-examination.
+
+\subsection{Phase 5: compilation and verification checks}
+\label{sec:phase-5}
+
+Phase 5 compiles the typed argument scaffold (Phase 3) and the evidence bindings (Phase 4) into a final speech artifact suitable for evaluation. Compilation preserves the provenance map: each substantive claim in the rendered speech remains traceable to one or more sentence IDs plus citation metadata. The system then runs verification checks that are directly tied to the accountability requirements:
+\begin{enumerate}
+    \item \textbf{Structural completeness} (template validators---\eg required components are present),
+    \item \textbf{Evidence/claim alignment} (each slot has at least one bound sentence; missing bindings fail closed), and
+    \item \textbf{Perspective consistency} (warrants and impacts do not contradict the declared perspective node from Phase 1).
+\end{enumerate}
+
+Figure~\ref{fig:pipeline} highlights where provenance is created (Phase 4) and where it is enforced (Phase 5).
