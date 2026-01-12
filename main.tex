@@ -1,9 +1,10 @@
 % FOAM: A Pluralistic Architecture for Explainable and Contestable AI
 % FAccT 2026 Submission
 
-\documentclass[sigconf]{acmart}
+\documentclass[manuscript,screen,review,anonymous]{acmart}
 
-% Page numbers
+% For submission - remove these lines for camera-ready
+\setcopyright{none}
 \settopmatter{printfolios=true}
 
 % Fix font expansion issue
@@ -35,14 +36,14 @@
   \institution{DebaterHub}
   \country{USA}
 }
-\email{devin@debaterhub.com}
+\email{dgonier@debaterhub.com}
 
 \author{John Hines}
 \affiliation{
   \institution{DebaterHub}
   \country{USA}
 }
-\email{john@debaterhub.com}
+\email{jhines@debaterhub.com}
 
 \author{P. Anand Rao}
 \affiliation{
@@ -72,6 +73,16 @@ High-stakes AI systems increasingly mediate access to credit, healthcare, and pu
 \input{sections/06_implications}
 \input{sections/07_limitations}
 \input{sections/08_conclusion}
+
+% === REQUIRED STATEMENTS FOR SUBMISSION ===
+% Note: Author Contributions, Acknowledgements, Competing Interests,
+% and Positionality Statement should be EXCLUDED for anonymous submission
+
+\section*{Generative AI Usage Statement}
+This research investigates the use of large language models (LLMs) within a structured multi-agent deliberation framework. The \foam{} system described in this paper uses LLMs as components within the deliberation pipeline. The paper text itself was drafted by human authors with AI assistance limited to copy-editing and formatting suggestions. All substantive claims, experimental design, and analysis reflect human judgment and interpretation.
+
+\section*{Ethical Considerations}
+This work develops AI systems with persuasive capabilities, which raises dual-use concerns. We address these in Section~\ref{sec:limitations} and Section~\ref{sec:implications}, discussing safeguards including transparency requirements, evidence provenance constraints, and the deliberate choice to evaluate in a domain (competitive debate) with established norms for scrutinizing persuasive claims. The evaluation involved no human subjects; all baselines were drawn from publicly available debate materials or generated outputs.
 
 % Bibliography
 \bibliographystyle{ACM-Reference-Format}

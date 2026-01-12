@@ -16,6 +16,14 @@ Building on the accountability requirements in Section~\ref{sec:related-work}, w
 
 Figure~\ref{fig:system-overview} provides a system overview: stance seeding $\rightarrow$ local drafting $\rightarrow$ cross-examination $\rightarrow$ evaluation $\rightarrow$ revision/sublation $\rightarrow$ accountability artifacts.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{figures/system_overview.png}
+\caption{\foam{} system architecture. Differentiated agents with explicit perspective nodes engage in deliberative protocols (stance seeding, local drafting, cross-examination, evaluation) that produce accountability artifacts including a consensus core, conditional claims, and dissent memo. The mediation graph tracks claims, objections, and revisions throughout the process.}
+\Description{Architecture diagram showing the FOAM system with six main processing stages (Differentiated Agents, Stance Seeding, Local Drafting, Cross-Examination, Evaluation, Sublation Operator) connected by arrows, with supporting components including Perspective Nodes feeding into agents, a Mediation Graph capturing deliberation, and three output types: Consensus Core, Conditional Claims, and Dissent Memo.}
+\label{fig:system-overview}
+\end{figure}
+
 Our threat model is accountability-centric: we assume that base generative models can (a) produce fluent but false claims and fabricated or misattributed support (``hallucination''), (b) rationalize decisions after the fact, (c) collapse multiple stakeholder perspectives into a single dominant frame, and (d) bury value tradeoffs inside unstructured prose such that stakeholders cannot identify \emph{what}, precisely, to challenge. These failure modes do not require adversarial intent; they are well documented in contemporary NLP systems and can persist even under strong prompting~\cite{ji2023survey}. \foam{}'s core design choice is therefore to make \emph{points of potential failure} explicitly addressable: disagreements are surfaced rather than smoothed, objections are represented as first-class objects, and synthesis is constrained to preserve traceability from contested premises to final recommendations.
 
 \subsection{Differentiated agents via explicit perspective and stance representation}
