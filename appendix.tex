@@ -1,0 +1,210 @@
+% Appendix: FOAM Implementation Details
+% Technical specifications for the FOAM architecture
+
+\appendix
+
+\section{Core FOAM Components}
+\label{sec:appendix-components}
+
+\subsection{Perspective Nodes}
+\label{sec:appendix-perspective}
+
+A \textbf{Perspective Node} is a composite configuration that establishes the philosophical and methodological orientation for an agent throughout the deliberation process. Unlike a simple role assignment, perspective nodes encode multi-dimensional worldview parameters that constrain all downstream generation.
+
+\textbf{Dimension Categories (32 total dimensions):}
+
+\begin{itemize}
+    \item \textbf{Debate Technique (11)}: resolution\_stance, argument\_architecture, negative\_strategy, organization\_structure, evidence\_integration, rhetorical\_framing, clash\_orientation, impact\_articulation, argument\_depth\_distribution, warrant\_density, theory\_deployment
+    \item \textbf{Epistemological (2)}: epistemological\_stance (empirical positivism, constructivism, critical realism, standpoint theory, pragmatism), evidence\_hierarchy
+    \item \textbf{Ethical/Impact (2)}: impact\_framework (utilitarian, deontological, virtue ethics, existential risk, structural violence), risk\_calculus
+    \item \textbf{Strategic (1)}: strategic\_posture
+    \item \textbf{Belief Paradigm (8)}: truth\_orientation, theism\_metaphysics, moral\_objectivity, human\_nature, source\_authority, free\_will\_stance, progress\_narrative, meaning\_of\_life
+    \item \textbf{Policy Paradigm (8)}: fiscal\_orientation, market\_vs\_state, equity\_vs\_efficiency, social\_policy\_lens, global\_vs\_national, environmental\_stance, temporal\_horizon, governance\_style
+\end{itemize}
+
+\textbf{Coherence Scoring:} Perspective nodes include a coherence score (0.0--1.0) measuring internal consistency. The algorithm starts at 0.5, applies affinity bonuses ($+0.1 \times \text{strength}$) for compatible dimension pairs, applies incompatibility penalties ($-0.15 \times \text{severity}$) for conflicts, and clamps to [0.0, 1.0].
+
+\subsection{Dialectical Refinement Protocol}
+\label{sec:appendix-dialectical}
+
+The dialectical refinement protocol implements iterative improvement through structured adversarial dialogue using a Proposer-Critic-Evaluator-Refiner loop.
+
+\textbf{Configuration:}
+\begin{itemize}
+    \item \texttt{max\_iterations}: 5 (maximum refinement cycles)
+    \item \texttt{convergence\_threshold}: Score variance threshold for early stopping
+    \item \texttt{best\_of\_n}: 3 (candidates generated per role)
+\end{itemize}
+
+Convergence occurs when score variance falls below threshold, proposal achieves strong defense (score\_diff $> 5.0$), or maximum iterations reached.
+
+\subsection{Flow Models (Deliberation Record)}
+\label{sec:appendix-flow}
+
+The deliberation record uses a hierarchical \textbf{Flow} model: Flow $\rightarrow$ FlowPage $\rightarrow$ FlowPageSpeech $\rightarrow$ Argument. Each Argument maintains explicit references to: the syllogism type structuring its logical form, the template node that allocated its word budget, evidence with sentence-level IDs, the guiding perspective, and any argument it rebuts.
+
+\section{Pipeline Implementation}
+\label{sec:appendix-pipeline}
+
+\subsection{Five-Phase Generation Pipeline}
+
+\textbf{Phase 1: Perspective Assignment.} Generate or select a PerspectiveNode, validate coherence, persist for downstream constraint enforcement.
+
+\textbf{Phase 2: Plan Generation \& Refinement.} Generate 4 candidate policy positions, select most promising, apply dialectical refinement (minimum 3 iterations), conduct targeted web research.
+
+\textbf{Phase 3: Template Tree Traversal.} Navigate hierarchical decision tree, allocate word budgets across syllogism types, generate TemplateTraversal objects for each leaf node.
+
+\textbf{Phase 4: Research \& Evidence Gathering.} Query vector database (OpenDebateEvidence, $\sim$85k cards), conduct web research, apply sentence-level provenance, validate quotes against source fulltext.
+
+\textbf{Phase 5: Compilation.} Assemble syllogisms in proper order, verify perspective consistency, validate evidence-claim alignment, output complete artifact.
+
+\subsection{Typed Syllogisms}
+
+FOAM enforces logical validity through \textbf{17 typed syllogisms}:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+\textbf{Type} & \textbf{Required Components} & \textbf{Context} \\
+\midrule
+advantage & uniqueness, link, internal\_link, impact & Affirmative benefits \\
+inherency & barrier\_type, current\_status, barriers & Why status quo fails \\
+solvency & mechanism, actor\_capability, effectiveness & How plan works \\
+disadvantage & uniqueness, link, impact & Negative harms \\
+counterplan & text, competition, net\_benefit & Alternative policy \\
+topicality & interpretation, violation, standards, voter & Definitions \\
+kritik & link, impact, alternative & Systemic critique \\
+case\_turn & target, direction, impact & Flip aff argument \\
+rebuttal & target, response\_type, warrant & Direct refutation \\
+framework & interpretation, standards & Evaluative lens \\
+\bottomrule
+\end{tabular}
+\caption{Selected typed syllogisms (10 of 17 shown)}
+\label{tab:syllogisms}
+\end{table}
+
+\subsection{Template Tree Traversal}
+\label{sec:appendix-template-tree}
+
+The template tree is a hierarchical decision structure guiding argument generation and resource allocation. Each path from root to leaf represents a complete argument specification with word budget.
+
+\textbf{Node Types:}
+\begin{itemize}
+    \item \texttt{root}: Entry point for debate format (e.g., ``Policy Debate'')
+    \item \texttt{speech}: Speech type container (e.g., ``1AC'', ``1NC'')
+    \item \texttt{branch}: Strategic decision point (e.g., ``Traditional'' vs ``Critical'')
+    \item \texttt{leaf}: Terminal argument specification (e.g., ``Economic Impact'')
+    \item \texttt{meta}: Cross-cutting template groups
+\end{itemize}
+
+\textbf{Example: Traditional 1AC Template Tree}
+
+\begin{verbatim}
+Policy Debate (root)
++-- 1AC (speech, 1300 words)
+    +-- Plan Text (50 words)
+    +-- Inherency (150 words, syllogism=inherency)
+    |   +-- Structural Barrier (75 words)
+    |   +-- Current Status (75 words)
+    +-- Solvency (200 words, syllogism=solvency)
+    |   +-- Mechanism (100 words)
+    |   +-- Actor Capability (100 words)
+    +-- Advantages (900 words)
+        +-- Economic (450 words, syllogism=advantage)
+        |   +-- Uniqueness (100 words)
+        |   +-- Link (100 words)
+        |   +-- Internal Link (100 words)
+        |   +-- Impact (150 words)
+        +-- Security (450 words, syllogism=advantage)
+            +-- Uniqueness (100 words)
+            +-- Link (100 words)
+            +-- Internal Link (100 words)
+            +-- Impact (150 words)
+\end{verbatim}
+
+\textbf{Traversal Process:} (1) Start at root and load debate format template; (2) Select speech type (1AC); (3) At each branch, LLM evaluates choice prompt based on perspective constraints, plan specifics, and strategic goals; (4) At leaves, generate TemplateTraversal objects recording the full path, word budget, research order, and syllogism type.
+
+\textbf{Word Budget Validation:} Parent budget equals sum of children budgets. Minimum allocations enforced per syllogism component (e.g., impact $\geq$ 30\% of advantage). Overruns trigger automatic condensation.
+
+\textbf{Dynamic Generation:} When existing templates lack an appropriate path, the system generates new TemplateNodes, mounts them to existing branches, propagates word budget, and continues traversal.
+
+\subsection{Sentence-Level Provenance}
+\label{sec:appendix-provenance}
+
+The sentence-level provenance system prevents hallucination by constraining LLM outputs to reference existing text rather than reproduce it.
+
+\textbf{Process:} (1) \textit{Indexing}: Each sentence receives a unique ID; (2) \textit{Selection}: LLM outputs sentence IDs rather than quoted text; (3) \textit{Assembly}: System retrieves actual sentences by ID; (4) \textit{Validation}: QuoteValidator confirms text exists in source with similarity threshold of 0.85.
+
+\textbf{Match Classification:} \texttt{exact} (verbatim match, score 1.0), \texttt{partial} (substring match, 0.7--0.9), \texttt{paraphrase} (semantic match, 0.5--0.7), \texttt{not\_found} (no match, 0.0).
+
+\section{Evaluation Methodology}
+\label{sec:appendix-evaluation}
+
+\subsection{Tournament Dataset}
+
+The evaluation corpus consisted of 66 first affirmative constructive (1AC) cases:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcp{5cm}}
+\toprule
+\textbf{Source} & \textbf{N} & \textbf{Description} \\
+\midrule
+FOAM System & 22 & Generated with Claude Haiku 3 (primary) / Sonnet 3.5 (refinement) \\
+Human Expert & 23 & Dartmouth, Georgetown, Michigan, Emory debate camps \\
+Zero-Shot AI & 21 & Gemini, Claude, ChatGPT, Grok with deep research \\
+\bottomrule
+\end{tabular}
+\caption{Tournament dataset composition}
+\label{tab:dataset}
+\end{table}
+
+\textbf{Model Separation:} FOAM outputs were generated using Claude Haiku 3 (primary) and Sonnet 3.5 (refinement). Tournament judging was performed by Claude Opus 4, ensuring separation between generation and evaluation models to prevent self-enhancement bias.
+
+\subsection{Tournament Protocol}
+
+\textbf{Anonymization:} All cases assigned unique IDs (e.g., ``Case\_001''); metadata and formatting stripped; origin hidden from judges.
+
+\textbf{Bracket Structure:} Modified Swiss-system with double elimination; initial grouping by strategic approach (Traditional, Kritik, Soft-Left); head-to-head evaluation in groups of 2--3; top 50\% advance per group; statistical ties (within 2.0 points) resolved by evidence validation.
+
+\subsection{Judging Criteria}
+
+Evaluation by Claude Opus 4 across five weighted dimensions:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcp{4.5cm}}
+\toprule
+\textbf{Dimension} & \textbf{Weight} & \textbf{Components} \\
+\midrule
+Argumentation Strength & 25\% & Logical consistency, warrant quality, impact development \\
+Evidence Quality & 25\% & Source authenticity, validation scores \\
+Strategic Coherence & 20\% & Internal consistency, preemptive handling \\
+Innovation & 15\% & Novel arguments, differentiation \\
+Competitive Viability & 15\% & Practical success potential \\
+\bottomrule
+\end{tabular}
+\caption{Evaluation rubric dimensions}
+\label{tab:rubric}
+\end{table}
+
+\subsection{Evidence Validation Results}
+
+\textbf{Perfect Validation Rate} measures percentage of cases where ALL cited evidence achieves exact or partial match:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Source} & \textbf{Evidence Score} & \textbf{Perfect Validation} \\
+\midrule
+FOAM System & 86.7 & 76.2\% \\
+Human Expert & 56.9 & 8.7\% \\
+Zero-Shot AI & 27.1 & 0.0\% \\
+\bottomrule
+\end{tabular}
+\caption{Evidence quality and validation rates}
+\label{tab:validation-appendix}
+\end{table}
