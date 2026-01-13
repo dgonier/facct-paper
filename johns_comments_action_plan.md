@@ -224,13 +224,17 @@ Anonymize - replace with "Anon" or similar placeholder for blind review.
 
 ## SUGGESTIONS TO ACCEPT/REJECT
 
-### Suggestion 1: Add Baseline Controls Description
+### Suggestion 1: Add Baseline Controls Description (HIGH PRIORITY - ACCEPT)
 **From:** John Hines @ 7:40 PM Yesterday
+**Location:** §5.2 Experimental design and baselines
 
-#### Suggestion
-> Add: "Baseline controls (zero-shot AI). To reduce confounding from artifact format and resource constraint…"
+#### Full Suggested Text (from Google Doc)
+> **Baseline controls (zero-shot AI).** To reduce confounding from artifact format and resource constraints, we generated the zero-shot baseline using Claude 4.5 in research mode, GPT-5 in deep research mode, SuperGrok Heavy, and Gemini 2.5 in research mode. We used a single standardized "mega-prompt" that enforced the same IAC conventions and constraints used by elite debate program materials and by DebaterHub's FOAM case-building pipeline FULL IAC outputs: **8 minutes of read-time target (1300-1700 words)**; debate formatting (ALL-CAPS tags, short analytic warrants above evidence); a fixed advantage/solvency structure; explicit impact calculus; and comparable evidence-density targets (**3-7 cards per advantage; 2-5 in solvency**). The prompt also enforced a strict **no-fabrication policy**: when reliable bibliographic details and quotations could not be produced, models were required to generate high-precision search strings and to mark uncertainty as **[EVIDENCE NEEDED]**. When the interface supported browsing, web access was enabled to reduce evidence-access confounds. Unlike FOAM, these baselines did not use multi-agent deliberation, typed syllogisms enforcement, or sentence-level provenance binding; thus, baseline citations remained unconstrained natural-language references and were evaluated under the same automated validation pipeline. We generated **one** case per topic per condition and used outputs **as-is** (no manual editing beyond uniform formatting normalization).
 
-#### Status: ⬜ REVIEW (Accept/Reject)
+#### Why Important
+This paragraph explains how the zero-shot baseline was constructed with equivalent constraints to FOAM, addressing potential criticism that the comparison is unfair.
+
+#### Status: ⬜ ACCEPT (add to LaTeX §5.2)
 
 ---
 
@@ -294,17 +298,17 @@ These items have been marked resolved and do not require action:
 | 1 | Revert Abstract opening to high-stakes framing | HIGH | Abstract | ⬜ |
 | 2 | Soften "contestable record" claim in Abstract | HIGH | Abstract | ⬜ |
 | 3 | Fix §6 "post-hoc dispute resolution" claim | HIGH | §6 | ⬜ |
-| 4 | Add formal Perfect Validation definition | HIGH | §5.4 | ⬜ |
-| 5 | Add resolvability/volume stats | HIGH | §5.4 | ⬜ |
-| 6 | Clarify scoring is over all 66 cases | HIGH | §5.3/§5.5 | ⬜ |
-| 7 | Delete "tournament champion Case 045" anecdote | HIGH | §5.5 | ⬜ |
-| 8 | Add Obermeyer et al. 2019 citation | MEDIUM | §1.1 | ⬜ |
-| 9 | Add Raghavan et al. 2020 citation | MEDIUM | §1.1 | ⬜ |
-| 10 | Add Angwin et al. 2016 (COMPAS) citation | MEDIUM | §1.1 | ⬜ |
-| 11 | Add Kluttz et al. 2020 citation | MEDIUM | §1.1 | ⬜ |
-| 12 | Clarify and fix "related work" citation | MEDIUM | §2? | ⬜ |
-| 13 | Add Adverse Impacts statement to endmatter | MEDIUM | Endmatter | ⬜ |
-| 14 | Replace "prestigious debate camps" wording | MEDIUM | §4/§5 | ⬜ |
-| 15 | Anonymize "DebaterHub Structured System" | MEDIUM | Throughout | ⬜ |
-| 16 | Accept/reject baseline controls suggestion | LOW | §5 | ⬜ |
+| 4 | **Add Baseline Controls paragraph** | HIGH | §5.2 | ⬜ |
+| 5 | Add formal Perfect Validation definition | HIGH | §5.4 | ⬜ |
+| 6 | Add resolvability/volume stats | HIGH | §5.4 | ⬜ |
+| 7 | Clarify scoring is over all 66 cases | HIGH | §5.3/§5.5 | ⬜ |
+| 8 | Delete "tournament champion Case 045" anecdote | HIGH | §5.5 | ⬜ |
+| 9 | Add Obermeyer et al. 2019 citation | MEDIUM | §1.1 | ⬜ |
+| 10 | Add Raghavan et al. 2020 citation | MEDIUM | §1.1 | ⬜ |
+| 11 | Add Angwin et al. 2016 (COMPAS) citation | MEDIUM | §1.1 | ⬜ |
+| 12 | Add Kluttz et al. 2020 citation | MEDIUM | §1.1 | ⬜ |
+| 13 | Clarify and fix "related work" citation | MEDIUM | §2? | ⬜ |
+| 14 | Add Adverse Impacts statement to endmatter | MEDIUM | Endmatter | ⬜ |
+| 15 | Replace "prestigious debate camps" wording | MEDIUM | §5.2 | ⬜ |
+| 16 | Anonymize "DebaterHub Structured System" | MEDIUM | Throughout | ⬜ |
 | 17 | Review Devin's formatting suggestions | LOW | Various | ⬜ |
