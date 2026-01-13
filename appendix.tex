@@ -22,7 +22,7 @@ A \textbf{Perspective Node} is a composite configuration that establishes the ph
     \item \textbf{Epistemological (2)}: epistemological\_stance (empirical positivism, constructivism, critical realism, standpoint theory, pragmatism), evidence\_hierarchy
     \item \textbf{Ethical/Impact (2)}: impact\_framework (utilitarian, deontological, virtue ethics, existential risk, structural violence), risk\_calculus
     \item \textbf{Strategic (1)}: strategic\_posture
-    \item \textbf{Belief Paradigm (8)}: truth\_orientation, theism\_metaphysics, moral\_objectivity, human\_nature, source\_authority, free\_will\_stance, progress\_narrative, meaning\_of\_life
+    \item \textbf{Belief Paradigm (8)}: truth\_orientation, theism\_metaphysics, moral\_objectivity, human\_nature, source\_authority, free\_will\_stance, progress\_narrative, meaning\_of\_life. \textit{Note:} These dimensions parameterize debate persona diversity for competitive argumentation settings. They are \textit{not} proposed for high-stakes governance applications, where perspective configuration should be restricted to institutionally legitimate attributes (stakeholder role, professional expertise, value priorities, evidentiary standards). Section~\ref{sec:limitations} discusses governance considerations for perspective selection.
     \item \textbf{Policy Paradigm (8)}: fiscal\_orientation, market\_vs\_state, equity\_vs\_efficiency, social\_policy\_lens, global\_vs\_national, environmental\_stance, temporal\_horizon, governance\_style
 \end{itemize}
 
@@ -284,17 +284,17 @@ Competitive Viability & 15\% & Practical success potential \\
 
 \subsection{Evidence Validation Results}
 
-\textbf{Perfect Validation Rate} measures percentage of cases where ALL cited evidence achieves exact or partial match:
+\textbf{Case-Level Full Validation Rate (CFVR)} measures percentage of cases where ALL cited evidence achieves exact or partial match:
 
 \begin{table}[h]
 \centering
 \begin{tabular}{lcc}
 \toprule
-\textbf{Source} & \textbf{Evidence Score} & \textbf{Perfect Validation} \\
+\textbf{Source} & \textbf{Evidence Score} & \textbf{CFVR} \\
 \midrule
-FOAM System & 86.7 & 76.2\% \\
-Human Expert & 56.9 & 8.7\% \\
-Zero-Shot AI & 27.1 & 0.0\% \\
+FOAM System & 78.3 & 76.2\% \\
+Human Expert & 51.4 & 8.7\% \\
+Zero-Shot AI & 20.5 & 0.0\% \\
 \bottomrule
 \end{tabular}
 \caption{Evidence quality and validation rates}

@@ -23,9 +23,9 @@ We acknowledge that RQ3 is only partially addressed: while we control for prompt
 \subsection{Experimental design and baselines}
 \label{sec:experimental-design}
 
-\textbf{Task selection.} We evaluate in evidence-grounded policy debate generation because it combines (i) long-horizon argumentative planning, (ii) adversarial robustness expectations (arguments must survive challenge), and (iii) strict evidentiary norms (claims are conventionally supported with citations). In computational argumentation, even highly resourced systems have historically relied on constrained debate settings and bespoke pipelines; the Project Debater line of work illustrates both the ambition of debate as a benchmark and the practical need to structure and constrain the task for reliable evaluation~\cite{slonim2021autonomous}.
+\textbf{Task selection.} We evaluate in policy debate generation because it combines long-horizon argumentative planning, adversarial robustness expectations, and strict evidentiary norms~\cite{slonim2021autonomous}.
 
-\textbf{Debate artifact.} We focus on the \textbf{first affirmative constructive (1AC)} as the most demanding generative unit in competitive policy debate: it must introduce a full strategic position (advantages/disadvantages/solvency framing), anticipate common lines of negative attack, and do so under tight length constraints while maintaining evidentiary support. This makes the 1AC a strong proxy for high-stakes accountable generation: arguments must be \emph{comprehensible}, \emph{internally coherent}, and \emph{traceable to evidence} to be meaningfully contestable.
+\textbf{Debate artifact.} We focus on the \textbf{first affirmative constructive (1AC)}, the most demanding generative unit: it must introduce a full strategic position under tight length constraints while maintaining evidentiary support---a strong proxy for high-stakes accountable generation.
 
 \textbf{Corpus and baselines.} We ran a \textbf{double-blind tournament of 66 cases} drawn from three sources:
 \begin{enumerate}
@@ -34,34 +34,25 @@ We acknowledge that RQ3 is only partially addressed: while we control for prompt
     \item \textbf{Zero-shot AI baseline} ($n=21$), produced by frontier models (Gemini/Claude/ChatGPT/Grok) using prompt engineering and web-research access but without debate-specific pluralistic architecture.
 \end{enumerate}
 
-\textbf{Baseline controls (zero-shot AI).} To reduce confounding from artifact format and resource constraints, we generated the zero-shot baseline using Claude 4.5 in research mode, GPT-5 in deep research mode, SuperGrok Heavy, and Gemini 2.5 in research mode. We used a single standardized ``mega-prompt'' that enforced the same 1AC conventions and constraints used by elite debate program materials and by our FOAM case-building pipeline: \textbf{8 minutes of read-time target (1300--1700 words)}; debate formatting (ALL-CAPS tags, short analytic warrants above evidence); a fixed advantage/solvency structure; explicit impact calculus; and comparable evidence-density targets (\textbf{3--7 cards per advantage; 2--5 in solvency}). The prompt also enforced a strict \textbf{no-fabrication policy}: when reliable bibliographic details and quotations could not be produced, models were required to generate high-precision search strings and to mark uncertainty as \textbf{[EVIDENCE NEEDED]}. When the interface supported browsing, web access was enabled to reduce evidence-access confounds. Unlike FOAM, these baselines did not use multi-agent deliberation, typed syllogisms enforcement, or sentence-level provenance binding; thus, baseline citations remained unconstrained natural-language references and were evaluated under the same automated validation pipeline. We generated \textbf{one} case per topic per condition and used outputs \textbf{as-is} (no manual editing beyond uniform formatting normalization).
+\textbf{Baseline controls (zero-shot AI).} We generated baselines using Claude 4.5, GPT-5, SuperGrok Heavy, and Gemini 2.5 in research modes with a standardized ``mega-prompt'' enforcing the same 1AC conventions: \textbf{1300--1700 words}, debate formatting, fixed advantage/solvency structure, and a strict \textbf{no-fabrication policy} requiring models to mark uncertainty as \textbf{[EVIDENCE NEEDED]}. Unlike FOAM, baselines did not use multi-agent deliberation, typed syllogisms, or sentence-level provenance; citations remained unconstrained and were evaluated under the same validation pipeline. We generated one case per topic per condition and used outputs as-is.
 
-\textbf{Evidence corpus for provenance.} \foam{}'s evidence retrieval and validation leverage a structured debate-evidence corpus derived from OpenDebateEvidence, which (as released) contains \textbf{3.5M+} competitive debate documents with metadata useful for downstream argument mining and citation~\cite{roush2024opendebate}. Operationally, our system queries a vector database of $\sim$85,000 curated ``cards'' plus any newly processed sources, and the generation pipeline preserves \emph{sentence-level identifiers} so that downstream reviewers can trace claims to exact supporting spans.
+\textbf{Evidence retrieval.} \foam{} combines multi-hop web research with OpenDebateEvidence lookup~\cite{roush2024opendebate}, selecting best-fit evidence per argument slot; sentence-level IDs enable traceability.
 
-\textbf{\foam{} implementation and model separation.} To mitigate self-enhancement bias in LLM-as-judge evaluation, we use different model families for generation and evaluation. \foam{}'s generation pipeline uses Claude 3 Haiku (primary deliberation, chosen for cost efficiency during iterative refinement) and Claude 3.5 Sonnet (evidence binding and compilation, chosen for higher fidelity). Tournament judging uses Claude Opus 4, a different and more capable model than those used in generation. This separation ensures that the judge model did not produce the outputs it evaluates. We acknowledge that models from the same provider may share systematic preferences; Section~\ref{sec:limitations} discusses this limitation and outlines future cross-model validation.
+\textbf{Model separation.} To mitigate self-enhancement bias, generation uses Claude Haiku/Sonnet while judging uses Claude Opus 4. We acknowledge same-provider models may share preferences; Section~\ref{sec:limitations} discusses this limitation.
 
 \subsection{Judging rubric and scoring}
 \label{sec:judging-rubric}
 
-\textbf{Tournament format and blinding.} All submissions were anonymized and assigned unique IDs (\eg \texttt{Case\_001}), and judging proceeded purely on content without revealing origin. Cases advanced through a modified Swiss-style bracket with double elimination, and pairings were balanced by strategic approach (\eg traditional policy vs.\ kritik) to reduce ``judge adaptation'' artifacts. Ties within a narrow score band triggered evidence validation as a tiebreaker, keeping accountability-relevant verifiability salient in advancement decisions. \textbf{All 66 cases were scored once under the rubric; Tables~\ref{tab:main-results}--\ref{tab:validation} report aggregate statistics over the full set and do not depend on bracket advancement.}
+\textbf{Tournament format.} All 66 submissions were anonymized and evaluated in a double-blind tournament (Appendix~\ref{sec:appendix-evaluation}). Tables~\ref{tab:main-results}--\ref{tab:validation} report aggregate statistics over the full corpus.
 
-\textbf{Rubric and judge.} Following established LLM-as-judge methodology~\cite{zheng2023judging}, a Claude Opus 4 judge evaluated each case on five weighted dimensions:
-\begin{itemize}
-    \item \textbf{Argumentation Strength} (25\%)
-    \item \textbf{Evidence Quality} (25\%)
-    \item \textbf{Strategic Coherence} (20\%)
-    \item \textbf{Innovation} (15\%)
-    \item \textbf{Competitive Viability} (15\%)
-\end{itemize}
-
-The rubric was designed to reward both argumentative competence and evidence-groundedness, while preserving enough structure for reproducibility.
+\textbf{Rubric and judge.} Following LLM-as-judge methodology~\cite{zheng2023judging}, a Claude Opus 4 judge evaluated each case on five weighted dimensions (Argumentation 25\%, Evidence 25\%, Coherence 20\%, Innovation 15\%, Viability 15\%; full rubric in Appendix~\ref{sec:appendix-evaluation}).
 
 \subsection{Evidence validation methodology}
 \label{sec:evidence-validation}
 
-\textbf{Why evidence validation is an accountability metric (not just ``anti-hallucination'').} In contestable systems, stakeholders must be able to \emph{locate} and \emph{evaluate} the grounds of a claim---especially where persuasive language can obscure weak or missing support. Audit frameworks similarly emphasize that assurance depends on traceable evidence artifacts rather than outcome plausibility alone~\cite{raji2020closing,lam2024assurance}. We therefore operationalize verifiability as a measurable property of each case's citations.
+\textbf{Why evidence validation matters.} In contestable systems, stakeholders must locate and evaluate claim grounds. Audit frameworks emphasize that assurance depends on traceable evidence artifacts~\cite{raji2020closing,lam2024assurance}. We operationalize verifiability as a measurable property of citations.
 
-\textbf{Automated citation checks and metric definitions.} Each citation was automatically checked against the referenced source and classified into four categories: \textit{exact match} (verbatim substring present in source), \textit{partial match} ($>$85\% character overlap or minor formatting differences), \textit{paraphrase} (semantic similarity $>$0.7 but not verbatim), or \textit{fabricated} (no matching content in cited source).
+\textbf{Automated citation checks.} Each citation was classified as exact match, partial match, paraphrase, or fabricated based on source verification (classification criteria in Appendix~\ref{sec:appendix-provenance}).
 
 We report two complementary metrics:
 \begin{itemize}
@@ -71,8 +62,6 @@ We report two complementary metrics:
 Table~\ref{tab:validation} reports CFVR (the stricter, case-level metric). The key finding holds under both metrics: \foam{} dramatically outperforms baselines on evidence integrity.
 
 \textbf{Validation procedure.} For \foam{} outputs, validation is near-trivial pointer integrity: the system assembles evidence from retrieved sentences by ID, so verification reduces to checking that the assembled text matches the indexed source at that ID. For baseline outputs, validation requires resolving citations to external sources (URLs, bibliographic references) and performing substring matching. This asymmetry partly explains \foam{}'s advantage: the architecture guarantees source accessibility by construction, whereas baselines may cite sources that are paywalled, non-digitized, or incompletely referenced.
-
-\textbf{How \foam{} changes the validation problem.} \foam{}'s sentence-level provenance changes citation validation from a semantic retrieval problem into a \emph{pointer integrity} problem: the model is never asked to reproduce source text, but instead selects sentence indices from retrieved documents and attaches them to specific argument components. This design greatly reduces degrees of freedom for fabrication and enables deterministic re-checking of a case's evidentiary backbone.
 
 \subsection{Results}
 \label{sec:results}

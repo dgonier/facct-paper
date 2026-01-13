@@ -1,0 +1,30 @@
+% Section 7: Limitations and Future Work
+% Last updated from: v1_2025-01-12_baseline.md
+
+\section{Limitations and future work}
+\label{sec:limitations}
+
+\subsection{Methodological limitations and validity threats}
+\label{sec:methodological-limitations}
+
+First, our primary outcome measure relies on an automated judge (Claude Opus 4) to score debate artifacts under a fixed rubric. While LLM-as-judge evaluation is increasingly standard at scale, it is known to exhibit systematic biases (\eg position effects, verbosity/style sensitivity, and self-enhancement tendencies) and may be vulnerable to prompt- or framing-based perturbations that shift preferences without corresponding semantic differences~\cite{zheng2023judging,shi2024judging,chen2024humans}. We mitigate these threats through three design choices: (i) double-blinding (judge sees anonymized cases), (ii) model separation (generation uses Claude Haiku/Sonnet; judging uses Claude Opus 4, a different model that did not produce the outputs it evaluates), and (iii) pairing quality scores with an independent evidence-validation audit that does not depend on LLM judgment.
+
+Nevertheless, models from the same provider may share systematic preferences (\eg favoring structured outputs, particular rhetorical patterns, or longer responses). The reported tournament results should be interpreted as descriptive for this evaluation setup. Future replications should triangulate across: (a) judge models from different providers (GPT-4, Gemini, open-source alternatives), (b) human expert adjudication on a representative subset, and (c) robustness analysis across rubric variations. We view the evidence validation results (Table~\ref{tab:validation}) as more robust than the quality scores (Table~\ref{tab:main-results}), since validation is computed deterministically without LLM judgment.
+
+Second, our system's accountability guarantees are conditioned on the properties of the underlying evidence substrate. Sentence-level provenance constrains the model to point to specific source sentences rather than inventing citations, but it does not ensure that the retrieved evidence is complete, representative, or up to date. Coverage gaps, topical skew, and retrieval errors can shape which arguments are discoverable, and can yield outputs that are ``well-cited'' yet misleading due to selection effects, over-aggregation, or missing context~\cite{roush2025superpersuasive}. These concerns are not unique to debate generation: any contestability mechanism built on curated corpora inherits the corpus' blind spots. Accordingly, \foam{} should be viewed as an approach to making claims auditable and challengeable---not as a guarantee that the selected evidence is normatively ``best'' or epistemically sufficient.
+
+Third, our evaluation scope is intentionally narrow and therefore limits external validity. We benchmark a specialized argumentative domain (policy debate) and a bounded artifact type (constructive case generation), and we do not yet measure downstream stakeholder contestation behaviors (\eg whether affected parties can efficiently detect, understand, and successfully challenge specific warrants or citations). Additionally, our CFVR metric is strict by design: it favors verbatim traceability and can under-credit faithful paraphrase or correct claims supported by multiple dispersed sentences. Conversely, the metric may fail to detect other fidelity failures (\eg cherry-picked quoting or context stripping) that require richer contextual checks. These are appropriate trade-offs for an audit-style evaluation, but they motivate follow-on studies with complementary human-centered and context-sensitive validation protocols.
+
+Fourth, our evaluation embeds cultural assumptions. American policy debate reflects adversarial norms that may not map to all contestation contexts; in settings where parties lack advocacy resources, adversarial framing may exacerbate power asymmetries. Future work should explore collaborative deliberation instantiations (\eg citizen assemblies).
+
+\subsection{Safety and misuse considerations}
+\label{sec:safety-misuse}
+
+Systems optimized for persuasive argumentation can be dual-use; we address misuse risks, affected groups, and mitigations in the Adverse Impacts statement (Endmatter).
+
+\subsection{Future work}
+\label{sec:future-work}
+
+First, human-subject evaluation of contestability as an interaction property: measuring time-to-challenge, challenge success rates, and perceived procedural fairness when participants attempt to locate evidence, challenge warrants, or compare perspective nodes.
+
+Second, extending \foam{} with optimization methods while preserving contestability constraints, including training objectives that reward faithful warrant-evidence alignment rather than only persuasiveness.

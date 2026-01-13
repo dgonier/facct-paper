@@ -21,14 +21,14 @@ plt.rcParams.update({
     'savefig.pad_inches': 0.02,
 })
 
-# Data from tournament results
+# Data from tournament results (CORRECTED from classification_scores_data.csv)
 categories = ['FOAM\n(Ours)', 'Human\nExperts', 'Zero-shot\nAI']
-overall_scores = [81.7, 70.1, 50.6]
-argumentation = [80.0, 73.9, 67.1]
-evidence = [86.7, 56.9, 27.1]
-coherence = [81.5, 68.8, 66.0]
-innovation = [88.1, 80.9, 68.1]
-viability = [72.5, 63.2, 38.5]
+overall_scores = [73.5, 62.4, 46.3]
+argumentation = [74.0, 67.4, 62.0]
+evidence = [78.3, 51.4, 20.5]
+coherence = [71.6, 62.3, 61.0]
+innovation = [81.1, 74.6, 63.3]
+viability = [65.8, 57.5, 35.9]
 
 # Perfect validation rates
 validation_rates = [76.2, 8.7, 0.0]
@@ -75,7 +75,7 @@ def fig2_validation_rates():
     x = np.arange(len(categories))
     bars = ax.bar(x, validation_rates, color=colors, alpha=0.85)
 
-    ax.set_ylabel('Perfect Validation (%)')
+    ax.set_ylabel('CFVR (%)')
     ax.set_xticks(x)
     ax.set_xticklabels(categories)
     ax.set_ylim(0, 100)
@@ -99,9 +99,9 @@ def fig3_radar_compact():
     """Compact radar chart of all dimensions."""
     categories_radar = ['Overall', 'Argument.', 'Evidence', 'Coherence', 'Innovation', 'Viability']
 
-    foam_data = [81.7, 80.0, 86.7, 81.5, 88.1, 72.5]
-    human_data = [70.1, 73.9, 56.9, 68.8, 80.9, 63.2]
-    ai_data = [50.6, 67.1, 27.1, 66.0, 68.1, 38.5]
+    foam_data = [73.5, 74.0, 78.3, 71.6, 81.1, 65.8]
+    human_data = [62.4, 67.4, 51.4, 62.3, 74.6, 57.5]
+    ai_data = [46.3, 62.0, 20.5, 61.0, 63.3, 35.9]
 
     # Close the radar
     foam_data += foam_data[:1]
