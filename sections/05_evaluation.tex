@@ -25,19 +25,21 @@ We ask whether \foam{} improves:
 
 \textbf{Corpus and baselines.} We ran a \textbf{double-blind tournament of 66 cases} drawn from three sources:
 \begin{enumerate}
-    \item \textbf{\foam{}-based structured system} (``DebaterHub Structured System,'' $n=22$), generated via differentiated perspectives, iterative dialectical refinement, typed syllogisms, and sentence-level provenance;
-    \item \textbf{Human expert baseline} ($n=23$), sampled from prestigious debate camps (Dartmouth, Georgetown, Michigan, Emory); and
+    \item \textbf{\foam{}-based structured system} ($n=22$), generated via differentiated perspectives, iterative dialectical refinement, typed syllogisms, and sentence-level provenance;
+    \item \textbf{Human expert baseline} ($n=23$), sampled from expert-authored training materials from highly competitive policy debate programs; and
     \item \textbf{Zero-shot AI baseline} ($n=21$), produced by frontier models (Gemini/Claude/ChatGPT/Grok) using prompt engineering and web-research access but without debate-specific pluralistic architecture.
 \end{enumerate}
+
+\textbf{Baseline controls (zero-shot AI).} To reduce confounding from artifact format and resource constraints, we generated the zero-shot baseline using Claude 4.5 in research mode, GPT-5 in deep research mode, SuperGrok Heavy, and Gemini 2.5 in research mode. We used a single standardized ``mega-prompt'' that enforced the same 1AC conventions and constraints used by elite debate program materials and by our FOAM case-building pipeline: \textbf{8 minutes of read-time target (1300--1700 words)}; debate formatting (ALL-CAPS tags, short analytic warrants above evidence); a fixed advantage/solvency structure; explicit impact calculus; and comparable evidence-density targets (\textbf{3--7 cards per advantage; 2--5 in solvency}). The prompt also enforced a strict \textbf{no-fabrication policy}: when reliable bibliographic details and quotations could not be produced, models were required to generate high-precision search strings and to mark uncertainty as \textbf{[EVIDENCE NEEDED]}. When the interface supported browsing, web access was enabled to reduce evidence-access confounds. Unlike FOAM, these baselines did not use multi-agent deliberation, typed syllogisms enforcement, or sentence-level provenance binding; thus, baseline citations remained unconstrained natural-language references and were evaluated under the same automated validation pipeline. We generated \textbf{one} case per topic per condition and used outputs \textbf{as-is} (no manual editing beyond uniform formatting normalization).
 
 \textbf{Evidence corpus for provenance.} \foam{}'s evidence retrieval and validation leverage a structured debate-evidence corpus derived from OpenDebateEvidence, which (as released) contains \textbf{3.5M+} competitive debate documents with metadata useful for downstream argument mining and citation~\cite{roush2024opendebate}. Operationally, our system queries a vector database of $\sim$85,000 curated ``cards'' plus any newly processed sources, and the generation pipeline preserves \emph{sentence-level identifiers} so that downstream reviewers can trace claims to exact supporting spans.
 
 \subsection{Judging rubric and scoring}
 \label{sec:judging-rubric}
 
-\textbf{Tournament format and blinding.} All submissions were anonymized and assigned unique IDs (\eg \texttt{Case\_001}), and judging proceeded purely on content without revealing origin. Cases advanced through a modified Swiss-style bracket with double elimination, and pairings were balanced by strategic approach (\eg traditional policy vs.\ kritik) to reduce ``judge adaptation'' artifacts. Ties within a narrow score band triggered evidence validation as a tiebreaker, keeping accountability-relevant verifiability salient in advancement decisions.
+\textbf{Tournament format and blinding.} All submissions were anonymized and assigned unique IDs (\eg \texttt{Case\_001}), and judging proceeded purely on content without revealing origin. Cases advanced through a modified Swiss-style bracket with double elimination, and pairings were balanced by strategic approach (\eg traditional policy vs.\ kritik) to reduce ``judge adaptation'' artifacts. Ties within a narrow score band triggered evidence validation as a tiebreaker, keeping accountability-relevant verifiability salient in advancement decisions. \textbf{All 66 cases were scored once under the rubric; Tables~\ref{tab:main-results}--\ref{tab:validation} report aggregate statistics over the full set and do not depend on bracket advancement.}
 
-\textbf{Rubric and judge.} A Claude Opus 4 judge evaluated each case on five weighted dimensions:
+\textbf{Rubric and judge.} Following established LLM-as-judge methodology~\cite{zheng2023judging}, a Claude Opus 4 judge evaluated each case on five weighted dimensions:
 \begin{itemize}
     \item \textbf{Argumentation Strength} (25\%)
     \item \textbf{Evidence Quality} (25\%)
@@ -101,4 +103,4 @@ Zero-shot AI & 0.0 \\
 \label{fig:evaluation-results}
 \end{figure}
 
-\textbf{Interpreting what is doing the work.} Two mechanisms plausibly drive the observed gap: (i) \textbf{pluralistic deliberation} (multi-perspective critique and refinement) improves strategic coherence and argument coverage, while (ii) \textbf{sentence-level provenance} directly improves evidence integrity and sharply limits fabrication opportunities. Consistent with this interpretation, the tournament champion (\texttt{Case\_045}, ``Navy Underwater Exploration'') achieved \textbf{fidelity = 1.0} alongside a strong final-round score, indicating that high persuasive quality and high verifiability can co-occur under the \foam{} constraint regime.
+\textbf{Interpreting what is doing the work.} Two mechanisms plausibly drive the observed gap: (i) \textbf{pluralistic deliberation} (multi-perspective critique and refinement) improves strategic coherence and argument coverage, while (ii) \textbf{sentence-level provenance} directly improves evidence integrity and sharply limits fabrication opportunities. Several high-scoring FOAM cases achieved perfect validation (fidelity = 1.0), indicating that high persuasive quality and high verifiability can co-occur under the \foam{} constraint regime.

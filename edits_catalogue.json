@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "created": "2026-01-13",
+    "source": "John Hines Google Doc comments",
+    "description": "Catalogue of all edits to apply from John's review"
+  },
+  "edits": [
+    {
+      "id": 1,
+      "priority": "HIGH",
+      "description": "Revert Abstract opening to high-stakes framing",
+      "filename": "main_reduced.tex",
+      "replaced": "When state-of-the-art reasoning models are given a hint that changes their answer, they reveal that hint in their chain-of-thought only 25--39\\% of the time~\\cite{chen2025reasoning}. Post-hoc explanations are often unfaithful to what actually drove the output. This ``faithfulness gap'' undermines accountability in high-stakes AI: if explanations cannot be trusted, they cannot support meaningful contestation.",
+      "replaced_with": "High-stakes AI systems increasingly mediate access to credit, healthcare, and public benefits, yet affected parties often cannot see why a decision was made or meaningfully contest it. Even post hoc review of chain-of-thought traces from individual models can be incomplete or strategically misleading, thereby limiting accountability."
+    },
+    {
+      "id": 2,
+      "priority": "HIGH",
+      "description": "Soften 'contestable record' claim in Abstract",
+      "filename": "main_reduced.tex",
+      "replaced": "and outputs not just a recommendation but a \\emph{contestable record}: claims linked to sentence-level evidence provenance, surviving objections, and explicit points of disagreement.",
+      "replaced_with": "and outputs not just a recommendation but a \\emph{contestable record intended to support downstream review}: claims linked to sentence-level evidence provenance, surviving objections, and explicit points of disagreement."
+    },
+    {
+      "id": 3,
+      "priority": "HIGH",
+      "description": "Fix Section 6 'post-hoc dispute resolution' claim",
+      "filename": "sections/06_implications.tex",
+      "replaced": "Institutionally, the resulting artifact functions as an auditable dossier that can plug into existing governance workflows (internal review, incident response, assurance audits, and post-hoc dispute resolution). The technical contribution is not replacing due process, but supplying the structured, traceable materials that make procedural review feasible at scale.",
+      "replaced_with": "Institutionally, the resulting artifact functions as an auditable dossier that can support downstream review within existing governance workflows (internal review, incident response, assurance audits); dispute resolution itself requires institutional process beyond what the technical system provides. The technical contribution is not replacing due process, but supplying the structured, traceable materials that make procedural review feasible at scale."
+    },
+    {
+      "id": 4,
+      "priority": "HIGH",
+      "description": "Add Baseline Controls paragraph to Section 5.2",
+      "filename": "sections/05_evaluation.tex",
+      "replaced": "\\textbf{Evidence corpus for provenance.} \\foam{}'s evidence retrieval",
+      "replaced_with": "\\textbf{Baseline controls (zero-shot AI).} To reduce confounding from artifact format and resource constraints, we generated the zero-shot baseline using Claude 4.5 in research mode, GPT-5 in deep research mode, SuperGrok Heavy, and Gemini 2.5 in research mode. We used a single standardized ``mega-prompt'' that enforced the same 1AC conventions and constraints used by elite debate program materials and by our FOAM case-building pipeline: \\textbf{8 minutes of read-time target (1300--1700 words)}; debate formatting (ALL-CAPS tags, short analytic warrants above evidence); a fixed advantage/solvency structure; explicit impact calculus; and comparable evidence-density targets (\\textbf{3--7 cards per advantage; 2--5 in solvency}). The prompt also enforced a strict \\textbf{no-fabrication policy}: when reliable bibliographic details and quotations could not be produced, models were required to generate high-precision search strings and to mark uncertainty as \\textbf{[EVIDENCE NEEDED]}. When the interface supported browsing, web access was enabled to reduce evidence-access confounds. Unlike FOAM, these baselines did not use multi-agent deliberation, typed syllogisms enforcement, or sentence-level provenance binding; thus, baseline citations remained unconstrained natural-language references and were evaluated under the same automated validation pipeline. We generated \\textbf{one} case per topic per condition and used outputs \\textbf{as-is} (no manual editing beyond uniform formatting normalization).\n\n\\textbf{Evidence corpus for provenance.} \\foam{}'s evidence retrieval"
+    },
+    {
+      "id": 5,
+      "priority": "HIGH",
+      "description": "Clarify scoring is over all 66 cases (add to Section 5.3)",
+      "filename": "sections/05_evaluation.tex",
+      "replaced": "Ties within a narrow score band triggered evidence validation as a tiebreaker, keeping accountability-relevant verifiability salient in advancement decisions.",
+      "replaced_with": "Ties within a narrow score band triggered evidence validation as a tiebreaker, keeping accountability-relevant verifiability salient in advancement decisions. \\textbf{All 66 cases were scored once under the rubric; Tables~\\ref{tab:main-results}--\\ref{tab:validation} report aggregate statistics over the full set and do not depend on bracket advancement.}"
+    },
+    {
+      "id": 6,
+      "priority": "HIGH",
+      "description": "Delete tournament champion anecdote from Section 5.5",
+      "filename": "sections/05_evaluation.tex",
+      "replaced": "\\textbf{Interpreting what is doing the work.} Two mechanisms plausibly drive the observed gap: (i) \\textbf{pluralistic deliberation} (multi-perspective critique and refinement) improves strategic coherence and argument coverage, while (ii) \\textbf{sentence-level provenance} directly improves evidence integrity and sharply limits fabrication opportunities. Consistent with this interpretation, the tournament champion (\\texttt{Case\\_045}, ``Navy Underwater Exploration'') achieved \\textbf{fidelity = 1.0} alongside a strong final-round score, indicating that high persuasive quality and high verifiability can co-occur under the \\foam{} constraint regime.",
+      "replaced_with": "\\textbf{Interpreting what is doing the work.} Two mechanisms plausibly drive the observed gap: (i) \\textbf{pluralistic deliberation} (multi-perspective critique and refinement) improves strategic coherence and argument coverage, while (ii) \\textbf{sentence-level provenance} directly improves evidence integrity and sharply limits fabrication opportunities. Several high-scoring FOAM cases achieved perfect validation (fidelity = 1.0), indicating that high persuasive quality and high verifiability can co-occur under the \\foam{} constraint regime."
+    },
+    {
+      "id": 7,
+      "priority": "MEDIUM",
+      "description": "Replace 'prestigious debate camps' with neutral wording",
+      "filename": "sections/05_evaluation.tex",
+      "replaced": "\\textbf{Human expert baseline} ($n=23$), sampled from prestigious debate camps (Dartmouth, Georgetown, Michigan, Emory);",
+      "replaced_with": "\\textbf{Human expert baseline} ($n=23$), sampled from expert-authored training materials from highly competitive policy debate programs;"
+    },
+    {
+      "id": 8,
+      "priority": "MEDIUM",
+      "description": "Anonymize 'DebaterHub Structured System'",
+      "filename": "sections/05_evaluation.tex",
+      "replaced": "\\textbf{\\foam{}-based structured system} (``DebaterHub Structured System,'' $n=22$)",
+      "replaced_with": "\\textbf{\\foam{}-based structured system} ($n=22$)"
+    },
+    {
+      "id": 9,
+      "priority": "MEDIUM",
+      "description": "Add Obermeyer et al. 2019 citation to references.bib",
+      "filename": "references.bib",
+      "replaced": null,
+      "replaced_with": "@article{obermeyer2019dissecting,\n  title={Dissecting racial bias in an algorithm used to manage the health of populations},\n  author={Obermeyer, Ziad and Powers, Brian and Vogeli, Christine and Mullainathan, Sendhil},\n  journal={Science},\n  volume={366},\n  number={6464},\n  pages={447--453},\n  year={2019},\n  doi={10.1126/science.aax2342}\n}"
+    },
+    {
+      "id": 10,
+      "priority": "MEDIUM",
+      "description": "Add Raghavan et al. 2020 citation to references.bib",
+      "filename": "references.bib",
+      "replaced": null,
+      "replaced_with": "@inproceedings{raghavan2020mitigating,\n  title={Mitigating Bias in Algorithmic Hiring: Evaluating Claims and Practices},\n  author={Raghavan, Manish and Barocas, Solon and Kleinberg, Jon and Levy, Karen},\n  booktitle={Proceedings of FAccT},\n  pages={469--481},\n  year={2020},\n  doi={10.1145/3351095.3372828}\n}"
+    },
+    {
+      "id": 11,
+      "priority": "MEDIUM",
+      "description": "Add Angwin et al. 2016 (COMPAS) citation to references.bib",
+      "filename": "references.bib",
+      "replaced": null,
+      "replaced_with": "@misc{angwin2016machinebias,\n  title={Machine Bias: There's Software Used Across the Country to Predict Future Criminals. And It's Biased Against Blacks},\n  author={Angwin, Julia and Larson, Jeff and Mattu, Surya and Kirchner, Lauren},\n  howpublished={ProPublica},\n  year={2016},\n  month={May}\n}"
+    },
+    {
+      "id": 12,
+      "priority": "MEDIUM",
+      "description": "Add Kluttz et al. 2020 citation to references.bib",
+      "filename": "references.bib",
+      "replaced": null,
+      "replaced_with": "@incollection{kluttz2020shaping,\n  title={Shaping Our Tools: Contestability as a Means to Promote Responsible Algorithmic Decision Making in the Professions},\n  author={Kluttz, Daniel and Kohli, Nitin and Mulligan, Deirdre K},\n  booktitle={After the Digital Tornado},\n  publisher={Cambridge University Press},\n  year={2020}\n}"
+    },
+    {
+      "id": 13,
+      "priority": "MEDIUM",
+      "description": "Add citations to Section 1.1 accountability gap claims",
+      "filename": "sections/01_introduction.tex",
+      "replaced": "AI systems are now routinely embedded in high-stakes decision workflows---healthcare triage and documentation, hiring and workplace management, credit and insurance, public benefits, and criminal-legal risk assessments.",
+      "replaced_with": "AI systems are now routinely embedded in high-stakes decision workflows---healthcare triage and documentation~\\cite{obermeyer2019dissecting}, hiring and workplace management~\\cite{raghavan2020mitigating}, credit and insurance, public benefits, and criminal-legal risk assessments~\\cite{angwin2016machinebias}."
+    },
+    {
+      "id": 14,
+      "priority": "MEDIUM",
+      "description": "Add Adverse Impacts statement to endmatter",
+      "filename": "main_reduced.tex",
+      "replaced": "\\section*{Ethical Considerations}\nThis work develops AI systems with persuasive capabilities, which raises dual-use concerns. We address these in Section~\\ref{sec:limitations} and Section~\\ref{sec:implications}, discussing safeguards including transparency requirements, evidence provenance constraints, and the deliberate choice to evaluate in a domain (competitive debate) with established norms for scrutinizing persuasive claims. The evaluation involved no human subjects; all baselines were drawn from publicly available debate materials or generated outputs.",
+      "replaced_with": "\\section*{Ethical Considerations}\nThis work develops AI systems with persuasive capabilities, which raises dual-use concerns. We address these in Section~\\ref{sec:limitations} and Section~\\ref{sec:implications}, discussing safeguards including transparency requirements, evidence provenance constraints, and the deliberate choice to evaluate in a domain (competitive debate) with established norms for scrutinizing persuasive claims. The evaluation involved no human subjects; all baselines were drawn from publicly available debate materials or generated outputs.\n\n\\section*{Adverse Impacts Statement}\nSystems that generate persuasive, evidence-grounded arguments could be misused for misinformation, manipulation, or to overwhelm human review capacity. Affected groups include decision-subjects in high-stakes domains and information consumers generally. We mitigate these risks through: (1) provenance requirements that make claims auditable; (2) evaluation in a domain with adversarial scrutiny norms; (3) architectural transparency (the deliberation trace is inspectable). Deployment in sensitive domains should include access controls, logging, human oversight, and institutional review processes."
+    }
+  ]
+}
