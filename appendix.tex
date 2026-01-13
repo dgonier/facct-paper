@@ -1,7 +1,11 @@
 % Appendix: FOAM Implementation Details
 % Technical specifications for the FOAM architecture
 
+\clearpage
 \appendix
+
+\section*{Appendix}
+\addcontentsline{toc}{section}{Appendix}
 
 \section{Core FOAM Components}
 \label{sec:appendix-components}
@@ -35,6 +39,34 @@ The dialectical refinement protocol implements iterative improvement through str
     \item \texttt{convergence\_threshold}: Score variance threshold for early stopping
     \item \texttt{best\_of\_n}: 3 (candidates generated per role)
 \end{itemize}
+
+\textbf{Pseudocode:}
+\begin{verbatim}
+function DIALECTICAL_REFINE(initial_proposal, context, perspective):
+    proposal = initial_proposal
+    history = []
+
+    for i in 1 to MAX_ITERATIONS:
+        # Generate criticism of current proposal
+        criticism = BEST_OF_N(
+            CRITIC(proposal, context, perspective), n=3)
+
+        # Evaluate proposal vs criticism
+        score_diff = EVALUATOR(proposal, criticism)
+        history.append(score_diff)
+
+        # Check convergence conditions
+        if variance(history) < THRESHOLD:
+            return proposal  # Converged
+        if score_diff > 5.0:
+            return proposal  # Strong defense
+
+        # Refine proposal based on valid criticism
+        proposal = BEST_OF_N(
+            REFINER(proposal, criticism, context), n=3)
+
+    return proposal
+\end{verbatim}
 
 Convergence occurs when score variance falls below threshold, proposal achieves strong defense (score\_diff $> 5.0$), or maximum iterations reached.
 
@@ -124,7 +156,40 @@ Policy Debate (root)
             +-- Impact (150 words)
 \end{verbatim}
 
-\textbf{Traversal Process:} (1) Start at root and load debate format template; (2) Select speech type (1AC); (3) At each branch, LLM evaluates choice prompt based on perspective constraints, plan specifics, and strategic goals; (4) At leaves, generate TemplateTraversal objects recording the full path, word budget, research order, and syllogism type.
+\textbf{Traversal Pseudocode:}
+\begin{verbatim}
+function TRAVERSE_TEMPLATE_TREE(root, perspective, plan, budget):
+    traversals = []
+    queue = [(root, [], budget)]
+
+    while queue not empty:
+        (node, path, remaining_budget) = queue.pop()
+        path = path + [node]
+
+        if node.type == "leaf":
+            # Create traversal record for research job
+            traversals.append(TemplateTraversal(
+                path_nodes=path,
+                word_budget=node.word_budget,
+                syllogism_type=node.syllogism_type,
+                research_order=len(traversals) + 1
+            ))
+        else:
+            # Select children based on perspective/plan
+            selected = LLM_SELECT(
+                node.children,
+                node.children_choice_prompt,
+                perspective, plan)
+
+            # Allocate budget to selected children
+            allocations = ALLOCATE_BUDGET(
+                selected, remaining_budget)
+
+            for child, alloc in zip(selected, allocations):
+                queue.append((child, path, alloc))
+
+    return traversals
+\end{verbatim}
 
 \textbf{Word Budget Validation:} Parent budget equals sum of children budgets. Minimum allocations enforced per syllogism component (e.g., impact $\geq$ 30\% of advantage). Overruns trigger automatic condensation.
 
@@ -136,6 +201,33 @@ Policy Debate (root)
 The sentence-level provenance system prevents hallucination by constraining LLM outputs to reference existing text rather than reproduce it.
 
 \textbf{Process:} (1) \textit{Indexing}: Each sentence receives a unique ID; (2) \textit{Selection}: LLM outputs sentence IDs rather than quoted text; (3) \textit{Assembly}: System retrieves actual sentences by ID; (4) \textit{Validation}: QuoteValidator confirms text exists in source with similarity threshold of 0.85.
+
+\textbf{Evidence Selection Pseudocode:}
+\begin{verbatim}
+function SELECT_EVIDENCE(source_document, argument_context):
+    # Index all sentences in source
+    sentences = {}
+    for i, sent in enumerate(split_sentences(source_document)):
+        sentences[f"sent_{i}"] = sent
+
+    # LLM selects relevant sentence IDs (not text)
+    selected_ids = LLM_SELECT_SENTENCES(
+        sentence_index=sentences.keys(),
+        context=argument_context,
+        max_sentences=5)
+
+    # Assemble evidence from original text
+    evidence_text = ""
+    for sid in selected_ids:
+        evidence_text += sentences[sid] + " /.../ "
+
+    # Validate against source
+    validation = VALIDATE_QUOTE(evidence_text, source_document)
+    if not validation.is_valid:
+        return SELECT_EVIDENCE(source_document, argument_context)
+
+    return Evidence(text=evidence_text, source_ids=selected_ids)
+\end{verbatim}
 
 \textbf{Match Classification:} \texttt{exact} (verbatim match, score 1.0), \texttt{partial} (substring match, 0.7--0.9), \texttt{paraphrase} (semantic match, 0.5--0.7), \texttt{not\_found} (no match, 0.0).
 
